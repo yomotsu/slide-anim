@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>=^.^=</title>
+<style>
+#panel{
+	border: 2px solid #000;
+	padding: 10px;
+	background: #ccc;
+}
+</style>
+</head>
+<body>
+<p><a href="https://github.com/yomotsu/slide-anim">GitHub repo</a></p>
+
+
+<button
+	type="button"
+	id="slideUpButton"
+>slide up</button>
+
+<button
+	type="button"
+	id="slideDownButton"
+>slide down</button>
+
+<div id="panel">
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+
+<p>other contents...</p>
+
+<script src="../dist/slide-anim.js"></script>
+<script>
+
+const panel           = document.querySelector( '#panel' );
+const slideUpButton   = document.querySelector( '#slideUpButton' );
+const slideDownButton = document.querySelector( '#slideDownButton' );
+
+
+slideUpButton.addEventListener( 'click', function () {
+	slideAnim.slideUp( panel, { onComplete: function () { alert( 'hidden!' ); } } );
+} );
+slideDownButton.addEventListener( 'click', function () {
+	slideAnim.slideDown( panel, { onComplete: function () { alert( 'shown!' ); } } );
+} );
+
+</script>
+
+</body>
+</html>
