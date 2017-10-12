@@ -62,10 +62,10 @@ export function slideDown( el, options ) {
 	const isBorderBox = /border-box/.test( style.getPropertyValue( 'box-sizing' ) );
 
 	const contentHeight = defaultStyles.height;
-	const paddingTop = + defaultStyles.paddingTop;
-	const paddingBottom = + defaultStyles.paddingBottom;
-	const borderTop = + defaultStyles.borderTopWidth;
-	const borderBottom = + defaultStyles.borderBottomWidth;
+	const paddingTop = defaultStyles.paddingTop;
+	const paddingBottom = defaultStyles.paddingBottom;
+	const borderTop = defaultStyles.borderTop;
+	const borderBottom = defaultStyles.borderBottom;
 
 	const duration = options && options.duration || 400;
 	const cssDuration = duration + 'ms';
