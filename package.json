@@ -1,6 +1,6 @@
 {
   "name": "slide-anim",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Yomotsu",
   "license": "MIT",
   "main": "dist/slide-anim.js",
@@ -21,6 +21,9 @@
     "release": "rollup --config && uglifyjs dist/slide-anim.js -cm --preamble \"/*!\n * slide-anim\n * https://github.com/yomotsu/slide-anim\n * (c) 2017 @yomotsu\n * Released under the MIT License.\n */\" > dist/slide-anim.min.js"
   },
   "keywords": [
-    "slide", "slidedown", "slideup", "slidetoggle"
+    "slide",
+    "slidedown",
+    "slideup",
+    "slidetoggle"
   ]
 }
