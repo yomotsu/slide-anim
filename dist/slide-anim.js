@@ -64,10 +64,10 @@
 		var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
 
 		var contentHeight = defaultStyles.height;
-		var paddingTop = +defaultStyles.paddingTop;
-		var paddingBottom = +defaultStyles.paddingBottom;
-		var borderTop = +defaultStyles.borderTopWidth;
-		var borderBottom = +defaultStyles.borderBottomWidth;
+		var paddingTop = defaultStyles.paddingTop;
+		var paddingBottom = defaultStyles.paddingBottom;
+		var borderTop = defaultStyles.borderTop;
+		var borderBottom = defaultStyles.borderBottom;
 
 		var duration = options && options.duration || 400;
 		var cssDuration = duration + 'ms';
