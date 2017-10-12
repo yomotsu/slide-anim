@@ -43,7 +43,7 @@ $ npm install --save slide-anim
 then
 
 ```
-import { slideDown, slideUp } from 'slide-anim';
+import { slideDown, slideUp, slideStop } from 'slide-anim';
 
 var element = document.getElementById( 'panel' );
 
@@ -54,6 +54,10 @@ function onSlideUpButtonClick () {
 function onSlideDownButtonClick () {
 	slideDown( element );
 }
+
+function onSlideStopButtonClick () {
+	slideStop( element );
+}
 ```
 
 ### Options
@@ -62,3 +66,13 @@ function onSlideDownButtonClick () {
 | ------------- | -------- | --- |
 | `duration`    | optional | animation duration in ms. default is `600` |
 | `onComplete`  | optional | function that is called when the ended |
+
+e.g.
+```
+slideUp( element, {
+	duration: 800,
+	onComplete() {
+		console.log( 'done!' );
+	}
+);
+```

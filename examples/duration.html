@@ -26,6 +26,11 @@
 	id="slideDownButton"
 >slide down</button>
 
+<button
+	type="button"
+	id="slideStopButton"
+>slide stop</button>
+
 <div id="panel">
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -50,6 +55,9 @@ slideUpButton.addEventListener( 'click', function () {
 } );
 slideDownButton.addEventListener( 'click', function () {
 	slideAnim.slideDown( panel, { duration: 5000 } );
+} );
+slideStopButton.addEventListener( 'click', function () {
+	slideAnim.slideStop( panel );
 } );
 
 </script>
