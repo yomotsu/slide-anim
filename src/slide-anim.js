@@ -54,7 +54,7 @@ const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
 
 export function slideDown( el, options ) {
 
-	if ( inAnimItems.findIndex( el ) !== -1 ) return;
+	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
 	const defaultStyle = el.getAttribute( 'style' ) || '';
 	const style = window.getComputedStyle( el );
@@ -124,15 +124,15 @@ export function slideDown( el, options ) {
 
 export function slideUp( el, options ) {
 
-	if ( inAnimItems.findIndex( el ) !== -1 ) return;
+	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
 	const defaultStyle = el.getAttribute( 'style' ) || '';
 	const style = window.getComputedStyle( el );
 	const isBorderBox = /border-box/.test( style.getPropertyValue( 'box-sizing' ) );
 	const paddingTop = + style.getPropertyValue( 'padding-top' ).replace( /px/, '' );
-	const paddingBottom = + style.getPropertyValue('padding-bottom').replace( /px/, '' );
+	const paddingBottom = + style.getPropertyValue( 'padding-bottom' ).replace( /px/, '' );
 	const borderTop = + style.getPropertyValue( 'border-top-width' ).replace( /px/, '' );
-	const borderBottom = + style.getPropertyValue('border-bottom-width').replace( /px/, '' );
+	const borderBottom = + style.getPropertyValue( 'border-bottom-width' ).replace( /px/, '' );
 	const contentHeight = el.scrollHeight;
 	const duration = options && options.duration || 400;
 	const cssDuration = duration + 'ms';
@@ -192,7 +192,6 @@ export function slideStop( el ) {
 
 	if ( ! elementObject ) return;
 
-	const defaultStyle = elementObject.defaultStyle;
 	const style = window.getComputedStyle( el );
 	const height = style.height;
 	const paddingTop = style.paddingTop;
@@ -200,7 +199,6 @@ export function slideStop( el ) {
 	const borderTopWidth = style.borderTopWidth;
 	const borderBottomWidth = style.borderBottomWidth;
 
-	// el.setAttribute( 'style', defaultStyle );
 	resetStyle( el );
 	el.style.height = height;
 	el.style.paddingTop = paddingTop;
@@ -254,6 +252,6 @@ function getDefaultStyles( el ) {
 		paddingBottom,
 		borderTop,
 		borderBottom
-	}
+	};
 
 }

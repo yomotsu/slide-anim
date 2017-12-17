@@ -168,7 +168,6 @@ function slideStop(el) {
 
 	if (!elementObject) return;
 
-	var defaultStyle = elementObject.defaultStyle;
 	var style = window.getComputedStyle(el);
 	var height = style.height;
 	var paddingTop = style.paddingTop;
@@ -176,7 +175,6 @@ function slideStop(el) {
 	var borderTopWidth = style.borderTopWidth;
 	var borderBottomWidth = style.borderBottomWidth;
 
-	// el.setAttribute( 'style', defaultStyle );
 	resetStyle(el);
 	el.style.height = height;
 	el.style.paddingTop = paddingTop;

@@ -7,7 +7,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.slideAnim = global.slideAnim || {})));
+	(factory((global.slideAnim = {})));
 }(this, (function (exports) { 'use strict';
 
 	var inAnimItems = {
@@ -174,7 +174,6 @@
 
 		if (!elementObject) return;
 
-		var defaultStyle = elementObject.defaultStyle;
 		var style = window.getComputedStyle(el);
 		var height = style.height;
 		var paddingTop = style.paddingTop;
@@ -182,7 +181,6 @@
 		var borderTopWidth = style.borderTopWidth;
 		var borderBottomWidth = style.borderBottomWidth;
 
-		// el.setAttribute( 'style', defaultStyle );
 		resetStyle(el);
 		el.style.height = height;
 		el.style.paddingTop = paddingTop;

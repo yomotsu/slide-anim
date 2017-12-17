@@ -8,7 +8,20 @@ const license = `/*!
  */`
 
 export default {
-	entry: 'src/slide-anim.js',
+	input: 'src/slide-anim.js',
+	output: [
+		{
+			format: 'umd',
+			name: 'slideAnim',
+			file: 'dist/slide-anim.js',
+			banner: license
+		},
+		{
+			format: 'es',
+			file: 'dist/slide-anim.module.js',
+			banner: license
+		}
+	],
 	indent: '\t',
 	sourceMap: false,
 	plugins: [
@@ -27,18 +40,5 @@ export default {
 				} ]
 			]
 		} )
-	],
-	targets: [
-		{
-			format: 'umd',
-			moduleName: 'slideAnim',
-			dest: 'dist/slide-anim.js',
-			banner: license
-		},
-		{
-			format: 'es',
-			dest: 'dist/slide-anim.module.js',
-			banner: license
-		}
 	]
 };
