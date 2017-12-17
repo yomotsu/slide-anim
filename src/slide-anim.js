@@ -68,7 +68,7 @@ export function slideDown( el, options ) {
 	const borderBottom = defaultStyles.borderBottom;
 
 	const duration = options && options.duration || 400;
-	const cssDuration = duration + 'ms';
+	const cssDuration = `${ duration }ms`;
 	const cssEasing = CSS_EASEOUT_EXPO;
 	const cssTransition = [
 		`height ${ cssDuration } ${ cssEasing }`,
@@ -85,11 +85,11 @@ export function slideDown( el, options ) {
 		el.style.paddingBottom     = 0;
 		el.style.borderTopWidth    = 0;
 		el.style.borderBottomWidth = 0;
-		el.style.display = 'block';
-		el.style.overflow = 'hidden';
-		el.style.visibility = 'hidden';
-		el.style.transition = cssTransition;
-		el.style.webkitTransition = cssTransition;
+		el.style.display           = 'block';
+		el.style.overflow          = 'hidden';
+		el.style.visibility        = 'hidden';
+		el.style.transition        = cssTransition;
+		el.style.webkitTransition  = cssTransition;
 
 		requestAnimationFrame( () => {
 
@@ -97,12 +97,12 @@ export function slideDown( el, options ) {
 				contentHeight - paddingTop - paddingBottom :
 				contentHeight + borderTop + borderBottom;
 
-			el.style.height            = height        + 'px';
-			el.style.paddingTop        = paddingTop    + 'px';
-			el.style.paddingBottom     = paddingBottom + 'px';
-			el.style.borderTopWidth    = borderTop     + 'px';
-			el.style.borderBottomWidth = borderBottom  + 'px';
-			el.style.visibility = 'visible';
+			el.style.height            = `${ height        }px`;
+			el.style.paddingTop        = `${ paddingTop    }px`;
+			el.style.paddingBottom     = `${ paddingBottom }px`;
+			el.style.borderTopWidth    = `${ borderTop     }px`;
+			el.style.borderBottomWidth = `${ borderBottom  }px`;
+			el.style.visibility        = 'visible';
 
 		} );
 
@@ -151,14 +151,14 @@ export function slideUp( el, options ) {
 			contentHeight - paddingTop - paddingBottom :
 			contentHeight + borderTop + borderBottom;
 
-		el.style.height            = height        + 'px';
-		el.style.paddingTop        = paddingTop    + 'px';
-		el.style.paddingBottom     = paddingBottom + 'px';
-		el.style.borderTopWidth    = borderTop     + 'px';
-		el.style.borderBottomWidth = borderBottom  + 'px';
-		el.style.overflow = 'hidden';
-		el.style.transition = cssTransition;
-		el.style.webkitTransition = cssTransition;
+		el.style.height            = `${height        }px`;
+		el.style.paddingTop        = `${paddingTop    }px`;
+		el.style.paddingBottom     = `${paddingBottom }px`;
+		el.style.borderTopWidth    = `${borderTop     }px`;
+		el.style.borderBottomWidth = `${borderBottom  }px`;
+		el.style.overflow          = 'hidden';
+		el.style.transition        = cssTransition;
+		el.style.webkitTransition  = cssTransition;
 
 		requestAnimationFrame( () => {
 
@@ -193,34 +193,34 @@ export function slideStop( el ) {
 	if ( ! elementObject ) return;
 
 	const style = window.getComputedStyle( el );
-	const height = style.height;
-	const paddingTop = style.paddingTop;
-	const paddingBottom = style.paddingBottom;
-	const borderTopWidth = style.borderTopWidth;
+	const height            = style.height;
+	const paddingTop        = style.paddingTop;
+	const paddingBottom     = style.paddingBottom;
+	const borderTopWidth    = style.borderTopWidth;
 	const borderBottomWidth = style.borderBottomWidth;
 
 	resetStyle( el );
-	el.style.height = height;
-	el.style.paddingTop = paddingTop;
-	el.style.paddingBottom = paddingBottom;
-	el.style.borderTopWidth = borderTopWidth;
+	el.style.height            = height;
+	el.style.paddingTop        = paddingTop;
+	el.style.paddingBottom     = paddingBottom;
+	el.style.borderTopWidth    = borderTopWidth;
 	el.style.borderBottomWidth = borderBottomWidth;
-	el.style.overflow = `hidden`;
+	el.style.overflow          = 'hidden';
 	inAnimItems.remove( el );
 
 }
 
 function resetStyle( el ) {
 
-	el.style.visibility = null;
-	el.style.height = null;
-	el.style.paddingTop = null;
-	el.style.paddingBottom = null;
-	el.style.borderTopWidth = null;
+	el.style.visibility        = null;
+	el.style.height            = null;
+	el.style.paddingTop        = null;
+	el.style.paddingBottom     = null;
+	el.style.borderTopWidth    = null;
 	el.style.borderBottomWidth = null;
-	el.style.overflow = null;
-	el.style.transition = null;
-	el.style.webkitTransition = null;
+	el.style.overflow          = null;
+	el.style.transition        = null;
+	el.style.webkitTransition  = null;
 
 }
 
@@ -231,10 +231,10 @@ function getDefaultStyles( el ) {
 	el.style.position   = 'absolute';
 	el.style.visibility = 'hidden';
 	el.style.display    = 'block';
-	el.style.height = null;
-	el.style.paddingTop = null;
-	el.style.paddingBottom = null;
-	el.style.borderTopWidth = null;
+	el.style.height            = null;
+	el.style.paddingTop        = null;
+	el.style.paddingBottom     = null;
+	el.style.borderTopWidth    = null;
 	el.style.borderBottomWidth = null;
 
 	const style = window.getComputedStyle( el );
