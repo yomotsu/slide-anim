@@ -1,6 +1,6 @@
 # slide-anim
 
-light weight, stand alone, jQuery like slideDown / slideUp
+Light weight, stand alone, jQuery like slideDown / slideUp
 
 [![Latest NPM release](https://img.shields.io/npm/v/slide-anim.svg)](https://www.npmjs.com/package/slide-anim)
 ![MIT License](https://img.shields.io/npm/l/slide-anim.svg)
@@ -14,11 +14,11 @@ light weight, stand alone, jQuery like slideDown / slideUp
 
 ## Usage
 
-### as Standalone lib
+### as a standalone lib
 
 Copy slide-anim.js from /dist/slide-anim.js and place it in your project.
 
-```
+```html
 <script src="./js/slide-anim.js"></script>
 ```
 
@@ -26,10 +26,12 @@ Copy slide-anim.js from /dist/slide-anim.js and place it in your project.
 var element = document.getElementById( 'panel' );
 
 function onSlideUpButtonClick () {
+	slideAnim.slideStop( element );
 	slideAnim.slideUp( element );
 }
 
 function onSlideDownButtonClick () {
+	slideAnim.slideStop( element );
 	slideAnim.slideDown( element );
 }
 ```
@@ -42,16 +44,18 @@ $ npm install --save slide-anim
 
 then
 
-```
+```javascript
 import { slideDown, slideUp, slideStop } from 'slide-anim';
 
 var element = document.getElementById( 'panel' );
 
 function onSlideUpButtonClick () {
+	slideStop( element );
 	slideUp( element );
 }
 
 function onSlideDownButtonClick () {
+	slideStop( element );
 	slideDown( element );
 }
 
@@ -59,6 +63,12 @@ function onSlideStopButtonClick () {
 	slideStop( element );
 }
 ```
+
+### Functions
+
+- `slideUp( element )`  : slide up
+- `slideDown( element )` : slide down
+- `slideStop( element )` : Stop previous slide animation.
 
 ### Options
 
@@ -68,7 +78,7 @@ function onSlideStopButtonClick () {
 | `onComplete`  | optional | function that is called when the ended |
 
 e.g.
-```
+```javascript
 slideUp( element, {
 	duration: 800,
 	onComplete() {
