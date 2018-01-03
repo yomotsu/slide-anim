@@ -207,17 +207,21 @@
 	function getDefaultStyles(el) {
 
 		var defaultStyle = el.getAttribute('style') || '';
+		var style = window.getComputedStyle(el);
 
-		el.style.position = 'absolute';
 		el.style.visibility = 'hidden';
 		el.style.display = 'block';
+
+		var width = +style.getPropertyValue('width').replace(/px/, '');
+
+		el.style.position = 'absolute';
+		el.style.width = width + 'px';
 		el.style.height = null;
 		el.style.paddingTop = null;
 		el.style.paddingBottom = null;
 		el.style.borderTopWidth = null;
 		el.style.borderBottomWidth = null;
 
-		var style = window.getComputedStyle(el);
 		var paddingTop = +style.getPropertyValue('padding-top').replace(/px/, '');
 		var paddingBottom = +style.getPropertyValue('padding-bottom').replace(/px/, '');
 		var borderTop = +style.getPropertyValue('border-top-width').replace(/px/, '');
