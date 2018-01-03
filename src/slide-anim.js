@@ -227,17 +227,21 @@ function resetStyle( el ) {
 function getDefaultStyles( el ) {
 
 	const defaultStyle = el.getAttribute( 'style' ) || '';
+	const style = window.getComputedStyle( el );
 
-	el.style.position   = 'absolute';
 	el.style.visibility = 'hidden';
 	el.style.display    = 'block';
+
+	const width = + style.getPropertyValue( 'width' ).replace( /px/, '' );
+
+	el.style.position = 'absolute';
+	el.style.width    = `${ width }px`;
 	el.style.height            = null;
 	el.style.paddingTop        = null;
 	el.style.paddingBottom     = null;
 	el.style.borderTopWidth    = null;
 	el.style.borderBottomWidth = null;
 
-	const style = window.getComputedStyle( el );
 	const paddingTop = + style.getPropertyValue( 'padding-top' ).replace( /px/, '' );
 	const paddingBottom = + style.getPropertyValue( 'padding-bottom' ).replace( /px/, '' );
 	const borderTop = + style.getPropertyValue( 'border-top-width' ).replace( /px/, '' );
