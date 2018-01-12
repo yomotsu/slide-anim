@@ -212,15 +212,15 @@ export function slideStop( el ) {
 
 function resetStyle( el ) {
 
-	el.style.visibility        = null;
-	el.style.height            = null;
-	el.style.paddingTop        = null;
-	el.style.paddingBottom     = null;
-	el.style.borderTopWidth    = null;
-	el.style.borderBottomWidth = null;
-	el.style.overflow          = null;
-	el.style.transition        = null;
-	el.style.webkitTransition  = null;
+	el.style.visibility        = '';
+	el.style.height            = '';
+	el.style.paddingTop        = '';
+	el.style.paddingBottom     = '';
+	el.style.borderTopWidth    = '';
+	el.style.borderBottomWidth = '';
+	el.style.overflow          = '';
+	el.style.transition        = '';
+	el.style.webkitTransition  = '';
 
 }
 
@@ -236,11 +236,11 @@ function getDefaultStyles( el ) {
 
 	el.style.position = 'absolute';
 	el.style.width    = `${ width }px`;
-	el.style.height            = null;
-	el.style.paddingTop        = null;
-	el.style.paddingBottom     = null;
-	el.style.borderTopWidth    = null;
-	el.style.borderBottomWidth = null;
+	el.style.height            = '';
+	el.style.paddingTop        = '';
+	el.style.paddingBottom     = '';
+	el.style.borderTopWidth    = '';
+	el.style.borderBottomWidth = '';
 
 	const paddingTop = + style.getPropertyValue( 'padding-top' ).replace( /px/, '' );
 	const paddingBottom = + style.getPropertyValue( 'padding-bottom' ).replace( /px/, '' );
