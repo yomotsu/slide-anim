@@ -23,8 +23,8 @@
   },
   "keywords": [
     "slide",
-    "slidedown",
-    "slideup",
-    "slidetoggle"
+    "slideDown",
+    "slideUp",
+    "slideToggle"
   ]
 }

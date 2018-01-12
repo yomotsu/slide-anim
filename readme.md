@@ -11,6 +11,7 @@ Light weight, stand alone, jQuery like slideDown / slideUp
 - [border-box](https://yomotsu.github.io/slide-anim/examples/border-box.html)
 - [duration](https://yomotsu.github.io/slide-anim/examples/duration.html)
 - [callback](https://yomotsu.github.io/slide-anim/examples/callback.html)
+- [end-height(experimental)](https://yomotsu.github.io/slide-anim/examples/end-height.html)
 
 ## Usage
 
@@ -38,7 +39,7 @@ function onSlideDownButtonClick () {
 
 ### with NPM
 
-```
+```shell
 $ npm install --save slide-anim
 ```
 
@@ -66,16 +67,16 @@ function onSlideStopButtonClick () {
 
 ### Functions
 
-- `slideUp( element )`  : slide up
-- `slideDown( element )` : slide down
-- `slideStop( element )` : Stop previous slide animation.
+- `slideUp( element )`  : Slide up
+- `slideDown( element )` : Slide down
+- `slideStop( element )` : Stop current slide animation. Useful to start another slide animation.
 
 ### Options
 
 | param         | required |     |
 | ------------- | -------- | --- |
-| `duration`    | optional | animation duration in ms. default is `600` |
-| `onComplete`  | optional | function that is called when the ended |
+| `duration`    | optional | animation duration in ms. default is `400` |
+| `onComplete`  | optional | callback function |
 
 e.g.
 ```javascript
