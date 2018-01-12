@@ -57,7 +57,7 @@ export function slideDown( el, options ) {
 	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
 	const _isVisible = isVisible( el );
-	const hasEndHeight = typeof options.endHeight === 'number';
+	const hasEndHeight = options && typeof options.endHeight === 'number';
 
 	const onComplete  = options && options.onComplete  || function () {};
 	const onCancelled = options && options.onCancelled || function () {};
@@ -93,8 +93,8 @@ export function slideDown( el, options ) {
 		if ( hasEndHeight ) return `${ options.endHeight }px`;
 
 		return ! isBorderBox ?
-			`${ height - paddingTop - paddingBottom - borderTop - borderBottom }px` :
-			`${ height + borderTop + borderBottom }px`;
+			`${ contentHeight - paddingTop - paddingBottom }px` :
+			`${ contentHeight + borderTop + borderBottom }px`;
 
 	} )();
 	const endPaddingTop        = `${ paddingTop    }px`;
