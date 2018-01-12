@@ -56,6 +56,11 @@ export function slideDown( el, options ) {
 
 	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
+	const _isVisible = isVisible( el );
+
+	const onComplete  = options && options.onComplete  || function () {};
+	const onCancelled = options && options.onCancelled || function () {};
+
 	const defaultStyle = el.getAttribute( 'style' ) || '';
 	const style = window.getComputedStyle( el );
 	const defaultStyles = getDefaultStyles( el );
@@ -75,34 +80,54 @@ export function slideDown( el, options ) {
 		`padding ${ cssDuration } ${ cssEasing }`,
 		`border-width ${ cssDuration } ${ cssEasing }`
 	].join();
-	const onComplete  = options && options.onComplete  || function () {};
-	const onCancelled = options && options.onCancelled || function () {};
+
+	const startHeight            = _isVisible ? style.height            : '0px';
+	const startPaddingTop        = _isVisible ? style.paddingTop        : '0px';
+	const startPaddingBottom     = _isVisible ? style.paddingBottom     : '0px';
+	const startBorderTopWidth    = _isVisible ? style.borderTopWidth    : '0px';
+	const startBorderBottomWidth = _isVisible ? style.borderBottomWidth : '0px';
+
+	const endHeight = ! isBorderBox ?
+		`${ contentHeight - paddingTop - paddingBottom }px` :
+		`${ contentHeight + borderTop + borderBottom }px`;
+	const endPaddingTop        = `${ paddingTop    }px`;
+	const endPaddingBottom     = `${ paddingBottom }px`;
+	const endBorderTopWidth    = `${ borderTop     }px`;
+	const endBorderBottomWidth = `${ borderBottom  }px`;
+
+	if (
+		startHeight === endHeight &&
+		startPaddingTop === endPaddingTop &&
+		startPaddingBottom === endPaddingBottom &&
+		startBorderTopWidth === endBorderTopWidth &&
+		startBorderBottomWidth === endBorderBottomWidth
+	) {
+
+		onComplete();
+		return;
+
+	}
 
 	requestAnimationFrame( () => {
 
-		el.style.height            = 0;
-		el.style.paddingTop        = 0;
-		el.style.paddingBottom     = 0;
-		el.style.borderTopWidth    = 0;
-		el.style.borderBottomWidth = 0;
+		el.style.height            = startHeight;
+		el.style.paddingTop        = startPaddingTop;
+		el.style.paddingBottom     = startPaddingBottom;
+		el.style.borderTopWidth    = startBorderTopWidth;
+		el.style.borderBottomWidth = startBorderBottomWidth;
 		el.style.display           = 'block';
 		el.style.overflow          = 'hidden';
-		el.style.visibility        = 'hidden';
+		el.style.visibility        = 'visible';
 		el.style.transition        = cssTransition;
 		el.style.webkitTransition  = cssTransition;
 
 		requestAnimationFrame( () => {
 
-			const height = ! isBorderBox ?
-				contentHeight - paddingTop - paddingBottom :
-				contentHeight + borderTop + borderBottom;
-
-			el.style.height            = `${ height        }px`;
-			el.style.paddingTop        = `${ paddingTop    }px`;
-			el.style.paddingBottom     = `${ paddingBottom }px`;
-			el.style.borderTopWidth    = `${ borderTop     }px`;
-			el.style.borderBottomWidth = `${ borderBottom  }px`;
-			el.style.visibility        = 'visible';
+			el.style.height            = endHeight;
+			el.style.paddingTop        = endPaddingTop;
+			el.style.paddingBottom     = endPaddingBottom;
+			el.style.borderTopWidth    = endBorderTopWidth;
+			el.style.borderBottomWidth = endBorderBottomWidth;
 
 		} );
 
@@ -126,6 +151,18 @@ export function slideUp( el, options ) {
 
 	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
+	const _isVisible = isVisible( el );
+
+	const onComplete  = options && options.onComplete  || function () {};
+	const onCancelled = options && options.onCancelled || function () {};
+
+	if ( ! _isVisible ) {
+
+		onComplete();
+		return;
+
+	}
+
 	const defaultStyle = el.getAttribute( 'style' ) || '';
 	const style = window.getComputedStyle( el );
 	const isBorderBox = /border-box/.test( style.getPropertyValue( 'box-sizing' ) );
@@ -142,8 +179,14 @@ export function slideUp( el, options ) {
 		`padding ${ cssDuration } ${ cssEasing }`,
 		`border-width ${ cssDuration } ${ cssEasing }`
 	].join();
-	const onComplete  = options && options.onComplete  || function () {};
-	const onCancelled = options && options.onCancelled || function () {};
+
+	const startHeight = ! isBorderBox ?
+		`${ contentHeight - paddingTop - paddingBottom }px` :
+		`${ contentHeight + borderTop + borderBottom }px`;
+	const startPaddingTop        = `${ paddingTop    }px`;
+	const startPaddingBottom     = `${ paddingBottom }px`;
+	const startBorderTopWidth    = `${ borderTop     }px`;
+	const startBorderBottomWidth = `${ borderBottom  }px`;
 
 	requestAnimationFrame( () => {
 
@@ -151,11 +194,11 @@ export function slideUp( el, options ) {
 			contentHeight - paddingTop - paddingBottom :
 			contentHeight + borderTop + borderBottom;
 
-		el.style.height            = `${height        }px`;
-		el.style.paddingTop        = `${paddingTop    }px`;
-		el.style.paddingBottom     = `${paddingBottom }px`;
-		el.style.borderTopWidth    = `${borderTop     }px`;
-		el.style.borderBottomWidth = `${borderBottom  }px`;
+		el.style.height            = startHeight;
+		el.style.paddingTop        = startPaddingTop;
+		el.style.paddingBottom     = startPaddingBottom;
+		el.style.borderTopWidth    = startBorderTopWidth;
+		el.style.borderBottomWidth = startBorderBottomWidth;
 		el.style.overflow          = 'hidden';
 		el.style.transition        = cssTransition;
 		el.style.webkitTransition  = cssTransition;
@@ -207,6 +250,12 @@ export function slideStop( el ) {
 	el.style.borderBottomWidth = borderBottomWidth;
 	el.style.overflow          = 'hidden';
 	inAnimItems.remove( el );
+
+}
+
+export function isVisible( el ) {
+
+	return el.offsetHeight !== 0;
 
 }
 
