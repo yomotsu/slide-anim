@@ -52,12 +52,17 @@ function slideDown(el, options) {
 
 	if (inAnimItems.findIndex(el) !== -1) return;
 
+	var _isVisible = isVisible(el);
+	var hasEndHeight = typeof options.endHeight === 'number';
+
+	var onComplete = options && options.onComplete || function () {};
+	var onCancelled = options && options.onCancelled || function () {};
+
 	var defaultStyle = el.getAttribute('style') || '';
 	var style = window.getComputedStyle(el);
 	var defaultStyles = getDefaultStyles(el);
 	var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
 
-	var contentHeight = defaultStyles.height;
 	var paddingTop = defaultStyles.paddingTop;
 	var paddingBottom = defaultStyles.paddingBottom;
 	var borderTop = defaultStyles.borderTop;
@@ -67,32 +72,50 @@ function slideDown(el, options) {
 	var cssDuration = duration + 'ms';
 	var cssEasing = CSS_EASEOUT_EXPO;
 	var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
-	var onComplete = options && options.onComplete || function () {};
-	var onCancelled = options && options.onCancelled || function () {};
+
+	var startHeight = _isVisible ? style.height : '0px';
+	var startPaddingTop = _isVisible ? style.paddingTop : '0px';
+	var startPaddingBottom = _isVisible ? style.paddingBottom : '0px';
+	var startBorderTopWidth = _isVisible ? style.borderTopWidth : '0px';
+	var startBorderBottomWidth = _isVisible ? style.borderBottomWidth : '0px';
+
+	var endHeight = function () {
+
+		if (hasEndHeight) return options.endHeight + 'px';
+
+		return !isBorderBox ? height - paddingTop - paddingBottom - borderTop - borderBottom + 'px' : height + borderTop + borderBottom + 'px';
+	}();
+	var endPaddingTop = paddingTop + 'px';
+	var endPaddingBottom = paddingBottom + 'px';
+	var endBorderTopWidth = borderTop + 'px';
+	var endBorderBottomWidth = borderBottom + 'px';
+
+	if (startHeight === endHeight && startPaddingTop === endPaddingTop && startPaddingBottom === endPaddingBottom && startBorderTopWidth === endBorderTopWidth && startBorderBottomWidth === endBorderBottomWidth) {
+
+		onComplete();
+		return;
+	}
 
 	requestAnimationFrame(function () {
 
-		el.style.height = 0;
-		el.style.paddingTop = 0;
-		el.style.paddingBottom = 0;
-		el.style.borderTopWidth = 0;
-		el.style.borderBottomWidth = 0;
+		el.style.height = startHeight;
+		el.style.paddingTop = startPaddingTop;
+		el.style.paddingBottom = startPaddingBottom;
+		el.style.borderTopWidth = startBorderTopWidth;
+		el.style.borderBottomWidth = startBorderBottomWidth;
 		el.style.display = 'block';
 		el.style.overflow = 'hidden';
-		el.style.visibility = 'hidden';
+		el.style.visibility = 'visible';
 		el.style.transition = cssTransition;
 		el.style.webkitTransition = cssTransition;
 
 		requestAnimationFrame(function () {
 
-			var height = !isBorderBox ? contentHeight - paddingTop - paddingBottom : contentHeight + borderTop + borderBottom;
-
-			el.style.height = height + 'px';
-			el.style.paddingTop = paddingTop + 'px';
-			el.style.paddingBottom = paddingBottom + 'px';
-			el.style.borderTopWidth = borderTop + 'px';
-			el.style.borderBottomWidth = borderBottom + 'px';
-			el.style.visibility = 'visible';
+			el.style.height = endHeight;
+			el.style.paddingTop = endPaddingTop;
+			el.style.paddingBottom = endPaddingBottom;
+			el.style.borderTopWidth = endBorderTopWidth;
+			el.style.borderBottomWidth = endBorderBottomWidth;
 		});
 	});
 
@@ -101,7 +124,13 @@ function slideDown(el, options) {
 		// el.setAttribute( 'style', defaultStyle );
 		resetStyle(el);
 		el.style.display = 'block';
+		if (hasEndHeight) {
+
+			el.style.height = options.endHeight + 'px';
+			el.style.overflow = 'hidden';
+		}
 		inAnimItems.remove(el);
+
 		onComplete();
 	}, duration);
 
@@ -111,6 +140,17 @@ function slideDown(el, options) {
 function slideUp(el, options) {
 
 	if (inAnimItems.findIndex(el) !== -1) return;
+
+	var _isVisible = isVisible(el);
+
+	var onComplete = options && options.onComplete || function () {};
+	var onCancelled = options && options.onCancelled || function () {};
+
+	if (!_isVisible) {
+
+		onComplete();
+		return;
+	}
 
 	var defaultStyle = el.getAttribute('style') || '';
 	var style = window.getComputedStyle(el);
@@ -124,18 +164,20 @@ function slideUp(el, options) {
 	var cssDuration = duration + 'ms';
 	var cssEasing = CSS_EASEOUT_EXPO;
 	var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
-	var onComplete = options && options.onComplete || function () {};
-	var onCancelled = options && options.onCancelled || function () {};
+
+	var startHeight = !isBorderBox ? contentHeight - paddingTop - paddingBottom + 'px' : contentHeight + borderTop + borderBottom + 'px';
+	var startPaddingTop = paddingTop + 'px';
+	var startPaddingBottom = paddingBottom + 'px';
+	var startBorderTopWidth = borderTop + 'px';
+	var startBorderBottomWidth = borderBottom + 'px';
 
 	requestAnimationFrame(function () {
 
-		var height = !isBorderBox ? contentHeight - paddingTop - paddingBottom : contentHeight + borderTop + borderBottom;
-
-		el.style.height = height + 'px';
-		el.style.paddingTop = paddingTop + 'px';
-		el.style.paddingBottom = paddingBottom + 'px';
-		el.style.borderTopWidth = borderTop + 'px';
-		el.style.borderBottomWidth = borderBottom + 'px';
+		el.style.height = startHeight;
+		el.style.paddingTop = startPaddingTop;
+		el.style.paddingBottom = startPaddingBottom;
+		el.style.borderTopWidth = startBorderTopWidth;
+		el.style.borderBottomWidth = startBorderBottomWidth;
 		el.style.overflow = 'hidden';
 		el.style.transition = cssTransition;
 		el.style.webkitTransition = cssTransition;
@@ -185,17 +227,22 @@ function slideStop(el) {
 	inAnimItems.remove(el);
 }
 
+function isVisible(el) {
+
+	return el.offsetHeight !== 0;
+}
+
 function resetStyle(el) {
 
-	el.style.visibility = null;
-	el.style.height = null;
-	el.style.paddingTop = null;
-	el.style.paddingBottom = null;
-	el.style.borderTopWidth = null;
-	el.style.borderBottomWidth = null;
-	el.style.overflow = null;
-	el.style.transition = null;
-	el.style.webkitTransition = null;
+	el.style.visibility = '';
+	el.style.height = '';
+	el.style.paddingTop = '';
+	el.style.paddingBottom = '';
+	el.style.borderTopWidth = '';
+	el.style.borderBottomWidth = '';
+	el.style.overflow = '';
+	el.style.transition = '';
+	el.style.webkitTransition = '';
 }
 
 function getDefaultStyles(el) {
@@ -210,11 +257,11 @@ function getDefaultStyles(el) {
 
 	el.style.position = 'absolute';
 	el.style.width = width + 'px';
-	el.style.height = null;
-	el.style.paddingTop = null;
-	el.style.paddingBottom = null;
-	el.style.borderTopWidth = null;
-	el.style.borderBottomWidth = null;
+	el.style.height = '';
+	el.style.paddingTop = '';
+	el.style.paddingBottom = '';
+	el.style.borderTopWidth = '';
+	el.style.borderBottomWidth = '';
 
 	var paddingTop = +style.getPropertyValue('padding-top').replace(/px/, '');
 	var paddingBottom = +style.getPropertyValue('padding-bottom').replace(/px/, '');
@@ -233,4 +280,4 @@ function getDefaultStyles(el) {
 	};
 }
 
-export { slideDown, slideUp, slideStop };
+export { slideDown, slideUp, slideStop, isVisible };
