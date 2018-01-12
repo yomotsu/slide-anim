@@ -15,30 +15,6 @@ Light weight, stand alone, jQuery like slideDown / slideUp
 
 ## Usage
 
-### as a standalone lib
-
-Copy slide-anim.js from /dist/slide-anim.js and place it in your project.
-
-```html
-<script src="./js/slide-anim.js"></script>
-```
-
-```javascript
-var element = document.getElementById( 'panel' );
-
-function onSlideUpButtonClick () {
-	slideAnim.slideStop( element );
-	slideAnim.slideUp( element );
-}
-
-function onSlideDownButtonClick () {
-	slideAnim.slideStop( element );
-	slideAnim.slideDown( element );
-}
-```
-
-### with NPM
-
 ```shell
 $ npm install --save slide-anim
 ```
@@ -62,6 +38,28 @@ function onSlideDownButtonClick () {
 
 function onSlideStopButtonClick () {
 	slideStop( element );
+}
+```
+
+### as a standalone JS lib
+
+Copy slide-anim.js from /dist/slide-anim.js and place it in your project.
+
+```html
+<script src="./js/slide-anim.js"></script>
+```
+
+```javascript
+var element = document.getElementById( 'panel' );
+
+function onSlideUpButtonClick () {
+	slideAnim.slideStop( element );
+	slideAnim.slideUp( element );
+}
+
+function onSlideDownButtonClick () {
+	slideAnim.slideStop( element );
+	slideAnim.slideDown( element );
 }
 ```
 
