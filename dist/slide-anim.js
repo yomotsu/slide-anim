@@ -60,13 +60,14 @@
 
 		var _isVisible = isVisible(el);
 		var hasEndHeight = options && typeof options.endHeight === 'number';
-
+		var display = options && options.display || 'block';
+		var duration = options && options.duration || 400;
 		var onComplete = options && options.onComplete || function () {};
 		var onCancelled = options && options.onCancelled || function () {};
 
 		var defaultStyle = el.getAttribute('style') || '';
 		var style = window.getComputedStyle(el);
-		var defaultStyles = getDefaultStyles(el);
+		var defaultStyles = getDefaultStyles(el, display);
 		var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
 
 		var contentHeight = defaultStyles.height;
@@ -75,7 +76,6 @@
 		var borderTop = defaultStyles.borderTop;
 		var borderBottom = defaultStyles.borderBottom;
 
-		var duration = options && options.duration || 400;
 		var cssDuration = duration + 'ms';
 		var cssEasing = CSS_EASEOUT_EXPO;
 		var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
@@ -110,7 +110,7 @@
 			el.style.paddingBottom = startPaddingBottom;
 			el.style.borderTopWidth = startBorderTopWidth;
 			el.style.borderBottomWidth = startBorderBottomWidth;
-			el.style.display = 'block';
+			el.style.display = display;
 			el.style.overflow = 'hidden';
 			el.style.visibility = 'visible';
 			el.style.transition = cssTransition;
@@ -130,7 +130,7 @@
 
 			// el.setAttribute( 'style', defaultStyle );
 			resetStyle(el);
-			el.style.display = 'block';
+			el.style.display = display;
 			if (hasEndHeight) {
 
 				el.style.height = options.endHeight + 'px';
@@ -149,7 +149,7 @@
 		if (inAnimItems.findIndex(el) !== -1) return;
 
 		var _isVisible = isVisible(el);
-
+		var duration = options && options.duration || 400;
 		var onComplete = options && options.onComplete || function () {};
 		var onCancelled = options && options.onCancelled || function () {};
 
@@ -162,12 +162,11 @@
 		var defaultStyle = el.getAttribute('style') || '';
 		var style = window.getComputedStyle(el);
 		var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
-		var paddingTop = +style.getPropertyValue('padding-top').replace(/px/, '');
-		var paddingBottom = +style.getPropertyValue('padding-bottom').replace(/px/, '');
-		var borderTop = +style.getPropertyValue('border-top-width').replace(/px/, '');
-		var borderBottom = +style.getPropertyValue('border-bottom-width').replace(/px/, '');
+		var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
+		var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
+		var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
+		var borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
 		var contentHeight = el.scrollHeight;
-		var duration = options && options.duration || 400;
 		var cssDuration = duration + 'ms';
 		var cssEasing = CSS_EASEOUT_EXPO;
 		var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
@@ -252,15 +251,15 @@
 		el.style.webkitTransition = '';
 	}
 
-	function getDefaultStyles(el) {
+	function getDefaultStyles(el, defaultDisplay) {
 
 		var defaultStyle = el.getAttribute('style') || '';
 		var style = window.getComputedStyle(el);
 
 		el.style.visibility = 'hidden';
-		el.style.display = 'block';
+		el.style.display = defaultDisplay || 'block';
 
-		var width = +style.getPropertyValue('width').replace(/px/, '');
+		var width = pxToNumber(style.getPropertyValue('width'));
 
 		el.style.position = 'absolute';
 		el.style.width = width + 'px';
@@ -270,10 +269,10 @@
 		el.style.borderTopWidth = '';
 		el.style.borderBottomWidth = '';
 
-		var paddingTop = +style.getPropertyValue('padding-top').replace(/px/, '');
-		var paddingBottom = +style.getPropertyValue('padding-bottom').replace(/px/, '');
-		var borderTop = +style.getPropertyValue('border-top-width').replace(/px/, '');
-		var borderBottom = +style.getPropertyValue('border-bottom-width').replace(/px/, '');
+		var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
+		var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
+		var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
+		var borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
 		var height = el.scrollHeight;
 
 		el.setAttribute('style', defaultStyle);
@@ -285,6 +284,11 @@
 			borderTop: borderTop,
 			borderBottom: borderBottom
 		};
+	}
+
+	function pxToNumber(px) {
+
+		return +px.replace(/px/, '');
 	}
 
 	exports.slideDown = slideDown;
