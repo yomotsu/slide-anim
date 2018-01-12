@@ -57,6 +57,7 @@ export function slideDown( el, options ) {
 	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
 	const _isVisible = isVisible( el );
+	const hasEndHeight = typeof options.endHeight === 'number';
 
 	const onComplete  = options && options.onComplete  || function () {};
 	const onCancelled = options && options.onCancelled || function () {};
@@ -87,9 +88,15 @@ export function slideDown( el, options ) {
 	const startBorderTopWidth    = _isVisible ? style.borderTopWidth    : '0px';
 	const startBorderBottomWidth = _isVisible ? style.borderBottomWidth : '0px';
 
-	const endHeight = ! isBorderBox ?
-		`${ contentHeight - paddingTop - paddingBottom }px` :
-		`${ contentHeight + borderTop + borderBottom }px`;
+	const endHeight = ( () => {
+
+		if ( hasEndHeight ) return `${ options.endHeight }px`;
+
+		return ! isBorderBox ?
+			`${ height - paddingTop - paddingBottom - borderTop - borderBottom }px` :
+			`${ height + borderTop + borderBottom }px`;
+
+	} )();
 	const endPaddingTop        = `${ paddingTop    }px`;
 	const endPaddingBottom     = `${ paddingBottom }px`;
 	const endBorderTopWidth    = `${ borderTop     }px`;
@@ -138,7 +145,14 @@ export function slideDown( el, options ) {
 		// el.setAttribute( 'style', defaultStyle );
 		resetStyle( el );
 		el.style.display = 'block';
+		if ( hasEndHeight ) {
+
+			el.style.height = `${ options.endHeight }px`;
+			el.style.overflow = `hidden`;
+
+		}
 		inAnimItems.remove( el );
+
 		onComplete();
 
 	}, duration );
