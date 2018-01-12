@@ -9,6 +9,7 @@ Light weight, stand alone, jQuery like slideDown / slideUp
 
 - [basic](https://yomotsu.github.io/slide-anim/examples/basic.html)
 - [border-box](https://yomotsu.github.io/slide-anim/examples/border-box.html)
+- [none-block-box](https://yomotsu.github.io/slide-anim/examples/none-block-box.html)
 - [duration](https://yomotsu.github.io/slide-anim/examples/duration.html)
 - [callback](https://yomotsu.github.io/slide-anim/examples/callback.html)
 - [end-height(experimental)](https://yomotsu.github.io/slide-anim/examples/end-height.html)
@@ -22,7 +23,7 @@ $ npm install --save slide-anim
 then
 
 ```javascript
-import { slideDown, slideUp, slideStop } from 'slide-anim';
+import { slideDown, slideUp, slideStop, isVisible } from 'slide-anim';
 
 var element = document.getElementById( 'panel' );
 
@@ -65,21 +66,25 @@ function onSlideDownButtonClick () {
 
 ### Functions
 
-- `slideUp( element )`  : Slide up
+- `slideUp( element )` : Slide up
 - `slideDown( element )` : Slide down
-- `slideStop( element )` : Stop current slide animation. Useful to start another slide animation.
+- `slideStop( element )` : Stop current slide animation. Useful to start another slide 
+animation.
+- `isVisible( element )` : return wheather the element is shown or `display: none`.
 
 ### Options
 
 | param         | required |     |
 | ------------- | -------- | --- |
 | `duration`    | optional | animation duration in ms. default is `400` |
+| `display`     | optional | default CSS display, such as `'flex'`. default is `'block'` |
 | `onComplete`  | optional | callback function |
 
 e.g.
 ```javascript
 slideUp( element, {
 	duration: 800,
+	display: 'flex',
 	onComplete() {
 		console.log( 'done!' );
 	}
