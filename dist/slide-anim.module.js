@@ -53,7 +53,7 @@ function slideDown(el, options) {
 	if (inAnimItems.findIndex(el) !== -1) return;
 
 	var _isVisible = isVisible(el);
-	var hasEndHeight = typeof options.endHeight === 'number';
+	var hasEndHeight = options && typeof options.endHeight === 'number';
 
 	var onComplete = options && options.onComplete || function () {};
 	var onCancelled = options && options.onCancelled || function () {};
@@ -63,6 +63,7 @@ function slideDown(el, options) {
 	var defaultStyles = getDefaultStyles(el);
 	var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
 
+	var contentHeight = defaultStyles.height;
 	var paddingTop = defaultStyles.paddingTop;
 	var paddingBottom = defaultStyles.paddingBottom;
 	var borderTop = defaultStyles.borderTop;
@@ -83,7 +84,7 @@ function slideDown(el, options) {
 
 		if (hasEndHeight) return options.endHeight + 'px';
 
-		return !isBorderBox ? height - paddingTop - paddingBottom - borderTop - borderBottom + 'px' : height + borderTop + borderBottom + 'px';
+		return !isBorderBox ? contentHeight - paddingTop - paddingBottom + 'px' : contentHeight + borderTop + borderBottom + 'px';
 	}();
 	var endPaddingTop = paddingTop + 'px';
 	var endPaddingBottom = paddingBottom + 'px';
