@@ -52,16 +52,16 @@ const inAnimItems = {
 
 const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
 
-export function slideDown( el, options ) {
+export function slideDown( el, options = {} ) {
 
 	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
 	const _isVisible = isVisible( el );
-	const hasEndHeight = options && typeof options.endHeight === 'number';
-	const display = options && options.display || 'block';
-	const duration = options && options.duration || 400;
-	const onComplete  = options && options.onComplete  || function () {};
-	const onCancelled = options && options.onCancelled || function () {};
+	const hasEndHeight = typeof options.endHeight === 'number';
+	const display     = options.display || 'block';
+	const duration    = options.duration || 400;
+	const onComplete  = options.onComplete  || function () {};
+	const onCancelled = options.onCancelled || function () {};
 
 	const defaultStyle = el.getAttribute( 'style' ) || '';
 	const style = window.getComputedStyle( el );
@@ -161,14 +161,15 @@ export function slideDown( el, options ) {
 
 }
 
-export function slideUp( el, options ) {
+export function slideUp( el, options = {} ) {
 
 	if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
 	const _isVisible = isVisible( el );
-	const duration = options && options.duration || 400;
-	const onComplete  = options && options.onComplete  || function () {};
-	const onCancelled = options && options.onCancelled || function () {};
+	const display     = options.display || 'block';
+	const duration    = options.duration || 400;
+	const onComplete  = options.onComplete  || function () {};
+	const onCancelled = options.onCancelled || function () {};
 
 	if ( ! _isVisible ) {
 
@@ -208,6 +209,7 @@ export function slideUp( el, options ) {
 		el.style.paddingBottom     = startPaddingBottom;
 		el.style.borderTopWidth    = startBorderTopWidth;
 		el.style.borderBottomWidth = startBorderBottomWidth;
+		el.style.display           = display;
 		el.style.overflow          = 'hidden';
 		el.style.transition        = cssTransition;
 		el.style.webkitTransition  = cssTransition;
