@@ -46,10 +46,13 @@ const slideDownButton = document.querySelector( '#slideDownButton' );
 
 
 slideUpButton.addEventListener( 'click', function () {
-	slideAnim.slideUp( panel, { onComplete: function () { alert( 'hidden!' ); } } );
+
+	slideAnim.slideUp( panel ).then( function () { alert( 'hidden!' ); } );
+
 } );
 slideDownButton.addEventListener( 'click', function () {
-	slideAnim.slideDown( panel, { onComplete: function () { alert( 'shown!' ); } } );
+
+	slideAnim.slideDown( panel ).then( function () { alert( 'shown!' ); } );
 } );
 
 </script>
