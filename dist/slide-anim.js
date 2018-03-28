@@ -10,6 +10,25 @@
 	(factory((global.slideAnim = {})));
 }(this, (function (exports) { 'use strict';
 
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var isPromiseSuppoted = typeof Promise === 'function';
+	var PromiseLike$1 = isPromiseSuppoted ? Promise : function PromiseLike(executor) {
+		_classCallCheck(this, PromiseLike);
+
+		var callback = function callback() {};
+		var resolve = function resolve() {
+			callback();
+		};
+		executor(resolve);
+
+		return {
+			then: function then(_callback) {
+				callback = _callback;
+			}
+		};
+	};
+
 	var inAnimItems = {
 
 		_: [],
@@ -58,162 +77,182 @@
 		var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 
-		if (inAnimItems.findIndex(el) !== -1) return;
+		return new PromiseLike$1(function (resolve) {
 
-		var _isVisible = isVisible(el);
-		var hasEndHeight = typeof options.endHeight === 'number';
-		var display = options.display || 'block';
-		var duration = options.duration || 400;
-		var onComplete = options.onComplete || function () {};
-		var onCancelled = options.onCancelled || function () {};
+			if (!!options.onComplete) {
 
-		var defaultStyle = el.getAttribute('style') || '';
-		var style = window.getComputedStyle(el);
-		var defaultStyles = getDefaultStyles(el, display);
-		var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
+				console.warn('options.onComplete will be deprecated. use \'then\' instead');
+			}
 
-		var contentHeight = defaultStyles.height;
-		var paddingTop = defaultStyles.paddingTop;
-		var paddingBottom = defaultStyles.paddingBottom;
-		var borderTop = defaultStyles.borderTop;
-		var borderBottom = defaultStyles.borderBottom;
+			if (inAnimItems.findIndex(el) !== -1) return;
 
-		var cssDuration = duration + 'ms';
-		var cssEasing = CSS_EASEOUT_EXPO;
-		var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
+			var _isVisible = isVisible(el);
+			var hasEndHeight = typeof options.endHeight === 'number';
+			var display = options.display || 'block';
+			var duration = options.duration || 400;
+			var onComplete = options.onComplete || function () {}; // will be deprecated
+			var onCancelled = options.onCancelled || function () {};
 
-		var startHeight = _isVisible ? style.height : '0px';
-		var startPaddingTop = _isVisible ? style.paddingTop : '0px';
-		var startPaddingBottom = _isVisible ? style.paddingBottom : '0px';
-		var startBorderTopWidth = _isVisible ? style.borderTopWidth : '0px';
-		var startBorderBottomWidth = _isVisible ? style.borderBottomWidth : '0px';
+			var defaultStyle = el.getAttribute('style') || '';
+			var style = window.getComputedStyle(el);
+			var defaultStyles = getDefaultStyles(el, display);
+			var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
 
-		var endHeight = function () {
+			var contentHeight = defaultStyles.height;
+			var paddingTop = defaultStyles.paddingTop;
+			var paddingBottom = defaultStyles.paddingBottom;
+			var borderTop = defaultStyles.borderTop;
+			var borderBottom = defaultStyles.borderBottom;
 
-			if (hasEndHeight) return options.endHeight + 'px';
+			var cssDuration = duration + 'ms';
+			var cssEasing = CSS_EASEOUT_EXPO;
+			var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
 
-			return !isBorderBox ? contentHeight - paddingTop - paddingBottom + 'px' : contentHeight + borderTop + borderBottom + 'px';
-		}();
-		var endPaddingTop = paddingTop + 'px';
-		var endPaddingBottom = paddingBottom + 'px';
-		var endBorderTopWidth = borderTop + 'px';
-		var endBorderBottomWidth = borderBottom + 'px';
+			var startHeight = _isVisible ? style.height : '0px';
+			var startPaddingTop = _isVisible ? style.paddingTop : '0px';
+			var startPaddingBottom = _isVisible ? style.paddingBottom : '0px';
+			var startBorderTopWidth = _isVisible ? style.borderTopWidth : '0px';
+			var startBorderBottomWidth = _isVisible ? style.borderBottomWidth : '0px';
 
-		if (startHeight === endHeight && startPaddingTop === endPaddingTop && startPaddingBottom === endPaddingBottom && startBorderTopWidth === endBorderTopWidth && startBorderBottomWidth === endBorderBottomWidth) {
+			var endHeight = function () {
 
-			onComplete();
-			return;
-		}
+				if (hasEndHeight) return options.endHeight + 'px';
 
-		requestAnimationFrame(function () {
+				return !isBorderBox ? contentHeight - paddingTop - paddingBottom + 'px' : contentHeight + borderTop + borderBottom + 'px';
+			}();
+			var endPaddingTop = paddingTop + 'px';
+			var endPaddingBottom = paddingBottom + 'px';
+			var endBorderTopWidth = borderTop + 'px';
+			var endBorderBottomWidth = borderBottom + 'px';
 
-			el.style.height = startHeight;
-			el.style.paddingTop = startPaddingTop;
-			el.style.paddingBottom = startPaddingBottom;
-			el.style.borderTopWidth = startBorderTopWidth;
-			el.style.borderBottomWidth = startBorderBottomWidth;
-			el.style.display = display;
-			el.style.overflow = 'hidden';
-			el.style.visibility = 'visible';
-			el.style.transition = cssTransition;
-			el.style.webkitTransition = cssTransition;
+			if (startHeight === endHeight && startPaddingTop === endPaddingTop && startPaddingBottom === endPaddingBottom && startBorderTopWidth === endBorderTopWidth && startBorderBottomWidth === endBorderBottomWidth) {
+
+				onComplete(); // will be deprecated
+				resolve();
+				return;
+			}
 
 			requestAnimationFrame(function () {
 
-				el.style.height = endHeight;
-				el.style.paddingTop = endPaddingTop;
-				el.style.paddingBottom = endPaddingBottom;
-				el.style.borderTopWidth = endBorderTopWidth;
-				el.style.borderBottomWidth = endBorderBottomWidth;
-			});
-		});
-
-		var timeoutId = setTimeout(function () {
-
-			// el.setAttribute( 'style', defaultStyle );
-			resetStyle(el);
-			el.style.display = display;
-			if (hasEndHeight) {
-
-				el.style.height = options.endHeight + 'px';
+				el.style.height = startHeight;
+				el.style.paddingTop = startPaddingTop;
+				el.style.paddingBottom = startPaddingBottom;
+				el.style.borderTopWidth = startBorderTopWidth;
+				el.style.borderBottomWidth = startBorderBottomWidth;
+				el.style.display = display;
 				el.style.overflow = 'hidden';
-			}
-			inAnimItems.remove(el);
+				el.style.visibility = 'visible';
+				el.style.transition = cssTransition;
+				el.style.webkitTransition = cssTransition;
 
-			onComplete();
-		}, duration);
+				requestAnimationFrame(function () {
 
-		inAnimItems.add(el, defaultStyle, timeoutId, onCancelled);
+					el.style.height = endHeight;
+					el.style.paddingTop = endPaddingTop;
+					el.style.paddingBottom = endPaddingBottom;
+					el.style.borderTopWidth = endBorderTopWidth;
+					el.style.borderBottomWidth = endBorderBottomWidth;
+				});
+			});
+
+			var timeoutId = setTimeout(function () {
+
+				// el.setAttribute( 'style', defaultStyle );
+				resetStyle(el);
+				el.style.display = display;
+				if (hasEndHeight) {
+
+					el.style.height = options.endHeight + 'px';
+					el.style.overflow = 'hidden';
+				}
+				inAnimItems.remove(el);
+
+				onComplete(); // will be deprecated
+				resolve();
+			}, duration);
+
+			inAnimItems.add(el, defaultStyle, timeoutId, onCancelled);
+		});
 	}
 
 	function slideUp(el) {
 		var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 
-		if (inAnimItems.findIndex(el) !== -1) return;
+		return new PromiseLike$1(function (resolve) {
 
-		var _isVisible = isVisible(el);
-		var display = options.display || 'block';
-		var duration = options.duration || 400;
-		var onComplete = options.onComplete || function () {};
-		var onCancelled = options.onCancelled || function () {};
+			if (!!options.onComplete) {
 
-		if (!_isVisible) {
+				console.warn('options.onComplete will be deprecated. use \'then\' instead');
+			}
 
-			onComplete();
-			return;
-		}
+			if (inAnimItems.findIndex(el) !== -1) return;
 
-		var defaultStyle = el.getAttribute('style') || '';
-		var style = window.getComputedStyle(el);
-		var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
-		var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
-		var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
-		var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
-		var borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
-		var contentHeight = el.scrollHeight;
-		var cssDuration = duration + 'ms';
-		var cssEasing = CSS_EASEOUT_EXPO;
-		var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
+			var _isVisible = isVisible(el);
+			var display = options.display || 'block';
+			var duration = options.duration || 400;
+			var onComplete = options.onComplete || function () {}; // will be deprecated
+			var onCancelled = options.onCancelled || function () {};
 
-		var startHeight = !isBorderBox ? contentHeight - paddingTop - paddingBottom + 'px' : contentHeight + borderTop + borderBottom + 'px';
-		var startPaddingTop = paddingTop + 'px';
-		var startPaddingBottom = paddingBottom + 'px';
-		var startBorderTopWidth = borderTop + 'px';
-		var startBorderBottomWidth = borderBottom + 'px';
+			if (!_isVisible) {
 
-		requestAnimationFrame(function () {
+				onComplete(); // will be deprecated
+				resolve();
+				return;
+			}
 
-			el.style.height = startHeight;
-			el.style.paddingTop = startPaddingTop;
-			el.style.paddingBottom = startPaddingBottom;
-			el.style.borderTopWidth = startBorderTopWidth;
-			el.style.borderBottomWidth = startBorderBottomWidth;
-			el.style.display = display;
-			el.style.overflow = 'hidden';
-			el.style.transition = cssTransition;
-			el.style.webkitTransition = cssTransition;
+			var defaultStyle = el.getAttribute('style') || '';
+			var style = window.getComputedStyle(el);
+			var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
+			var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
+			var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
+			var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
+			var borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
+			var contentHeight = el.scrollHeight;
+			var cssDuration = duration + 'ms';
+			var cssEasing = CSS_EASEOUT_EXPO;
+			var cssTransition = ['height ' + cssDuration + ' ' + cssEasing, 'padding ' + cssDuration + ' ' + cssEasing, 'border-width ' + cssDuration + ' ' + cssEasing].join();
+
+			var startHeight = !isBorderBox ? contentHeight - paddingTop - paddingBottom + 'px' : contentHeight + borderTop + borderBottom + 'px';
+			var startPaddingTop = paddingTop + 'px';
+			var startPaddingBottom = paddingBottom + 'px';
+			var startBorderTopWidth = borderTop + 'px';
+			var startBorderBottomWidth = borderBottom + 'px';
 
 			requestAnimationFrame(function () {
 
-				el.style.height = 0;
-				el.style.paddingTop = 0;
-				el.style.paddingBottom = 0;
-				el.style.borderTopWidth = 0;
-				el.style.borderBottomWidth = 0;
+				el.style.height = startHeight;
+				el.style.paddingTop = startPaddingTop;
+				el.style.paddingBottom = startPaddingBottom;
+				el.style.borderTopWidth = startBorderTopWidth;
+				el.style.borderBottomWidth = startBorderBottomWidth;
+				el.style.display = display;
+				el.style.overflow = 'hidden';
+				el.style.transition = cssTransition;
+				el.style.webkitTransition = cssTransition;
+
+				requestAnimationFrame(function () {
+
+					el.style.height = 0;
+					el.style.paddingTop = 0;
+					el.style.paddingBottom = 0;
+					el.style.borderTopWidth = 0;
+					el.style.borderBottomWidth = 0;
+				});
 			});
+
+			var timeoutId = setTimeout(function () {
+
+				// el.setAttribute( 'style', defaultStyle );
+				resetStyle(el);
+				el.style.display = 'none';
+				inAnimItems.remove(el);
+				onComplete(); // will be deprecated
+				resolve();
+			}, duration);
+
+			inAnimItems.add(el, defaultStyle, timeoutId, onCancelled);
 		});
-
-		var timeoutId = setTimeout(function () {
-
-			// el.setAttribute( 'style', defaultStyle );
-			resetStyle(el);
-			el.style.display = 'none';
-			inAnimItems.remove(el);
-			onComplete();
-		}, duration);
-
-		inAnimItems.add(el, defaultStyle, timeoutId, onCancelled);
 	}
 
 	function slideStop(el) {
