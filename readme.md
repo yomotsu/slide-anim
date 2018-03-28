@@ -78,15 +78,29 @@ animation.
 | ------------- | -------- | --- |
 | `duration`    | optional | animation duration in ms. default is `400` |
 | `display`     | optional | default CSS display, such as `'flex'`. default is `'block'` |
-| `onComplete`  | optional | callback function |
 
 e.g.
 ```javascript
 slideUp( element, {
 	duration: 800,
-	display: 'flex',
-	onComplete() {
-		console.log( 'done!' );
-	}
+	display: 'flex'
 );
+```
+
+### Callbacks
+
+`slideDown` and `slideUp` return Promise or Promise-ish object.
+
+- If Promise is available: returns a promise object.
+- If Promise is not available: returns a promise-ish object.
+
+Thus, following code will work regardless of whether Promise is suppoted or not.
+
+e.g
+```javascript
+slideUp( element ).then( () => {
+
+	conosle.log( 'done!' );
+
+} );
 ```
