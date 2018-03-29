@@ -98,7 +98,7 @@ Thus, following code works regardless of whether Promise is suppoted or not.
 
 e.g
 ```javascript
-slideUp( element ).then( () => {
+slideUp( element ).then( function() {
 
 	console.log( 'done!' );
 
