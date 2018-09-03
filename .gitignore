@@ -1,10 +1,6 @@
 *.DS_Store
 Thumbs.db
-
-logs
+node_modules
 *.log
 npm-debug.log*
-
-*.map
-
-node_modules
+.rpt2_cache
