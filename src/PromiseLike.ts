@@ -4,7 +4,7 @@ interface Executor{ ( cb: Resolve ): void };
 
 const global: any = window;
 const isPromiseSuppoted: boolean = typeof global.Promise === 'function';
-export default isPromiseSuppoted ? global.Promise : class PromiseLike {
+export const PromiseLike = isPromiseSuppoted ? global.Promise : class PromiseLike {
 
 	constructor( executor: Executor ) {
 
