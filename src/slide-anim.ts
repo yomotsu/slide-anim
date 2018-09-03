@@ -1,41 +1,54 @@
-import PromiseLike from './PromiseLike.js';
+import PromiseLike from './PromiseLike';
+
+interface InAnimItem {
+	el: HTMLElement,
+	defaultStyle: string,
+	timeoutId: number,
+	onCancelled(): any,
+}
+
+const pool: InAnimItem[] = [];
 
 const inAnimItems = {
 
-	_: [],
+	add(
+		el: HTMLElement,
+		defaultStyle: string,
+		timeoutId: any, // number
+		onCancelled: any
+	) {
 
-	add( el, defaultStyle, timeoutId, onCancelled ) {
-
-		inAnimItems.remove( el );
-		inAnimItems._.push( { el, defaultStyle, timeoutId, onCancelled } );
+		const inAnimItem: InAnimItem = { el, defaultStyle, timeoutId, onCancelled }
+		this.remove( el );
+		pool.push( inAnimItem );
 
 	},
 
-	remove( el ) {
+	remove( el: HTMLElement ) {
 
 		const index = inAnimItems.findIndex( el );
 
 		if ( index === - 1 ) return;
 
-		const inAnimItem = inAnimItems._[ index ];
+		const inAnimItem: InAnimItem = pool[ index ];
 
 		clearTimeout( inAnimItem.timeoutId );
 		inAnimItem.onCancelled();
-		inAnimItems._.splice( index, 1 );
+		pool.splice( index, 1 );
 
 	},
 
-	find( el ) {
+	find( el: HTMLElement ): InAnimItem {
 
-		return inAnimItems._[ inAnimItems.findIndex( el ) ];
+		return pool[ inAnimItems.findIndex( el ) ];
 
 	},
 
-	findIndex( el ) {
+	findIndex( el: HTMLElement ): number {
 
 		let index = - 1;
 
-		inAnimItems._.some( ( item, i ) => {
+		pool.some( ( item: InAnimItem, i: number ) => {
 
 			if ( item.el === el ) {
 
@@ -43,6 +56,8 @@ const inAnimItems = {
 				return true;
 
 			}
+
+			return false;
 
 		} );
 
@@ -52,25 +67,25 @@ const inAnimItems = {
 
 };
 
-const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
+const CSS_EASEOUT_EXPO: string = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
 
-export function slideDown( el, options = {} ) {
+interface SlideDownOption {
+	endHeight?: number,
+	display?: string,
+	duration?: number,
+	onCancelled?: () => any,
+}
 
-	return new PromiseLike( ( resolve ) => {
+export function slideDown( el: HTMLElement, options:SlideDownOption = {} ) {
 
-		if ( !! options.onComplete ) {
-
-			console.warn( 'options.onComplete will be deprecated. use \'then\' instead' );
-
-		}
+	return new PromiseLike( ( resolve: () => void ) => {
 
 		if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
-		const _isVisible = isVisible( el );
-		const hasEndHeight = typeof options.endHeight === 'number';
-		const display     = options.display || 'block';
-		const duration    = options.duration || 400;
-		const onComplete  = options.onComplete  || function () {}; // will be deprecated
+		const _isVisible: boolean = isVisible( el );
+		const hasEndHeight: boolean = typeof options.endHeight === 'number';
+		const display: string  = options.display || 'block';
+		const duration: number = options.duration || 400;
 		const onCancelled = options.onCancelled || function () {};
 
 		const defaultStyle = el.getAttribute( 'style' ) || '';
@@ -120,7 +135,6 @@ export function slideDown( el, options = {} ) {
 			startBorderBottomWidth === endBorderBottomWidth
 		) {
 
-			onComplete(); // will be deprecated
 			resolve();
 			return;
 
@@ -164,7 +178,6 @@ export function slideDown( el, options = {} ) {
 			}
 			inAnimItems.remove( el );
 
-			onComplete(); // will be deprecated
 			resolve();
 
 		}, duration );
@@ -175,27 +188,25 @@ export function slideDown( el, options = {} ) {
 
 }
 
-export function slideUp( el, options = {} ) {
+interface SlieUpOptions {
+	display?: string,
+	duration?: number,
+	onCancelled?: () => any,
+};
 
-	return new PromiseLike( ( resolve ) => {
+export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 
-		if ( !! options.onComplete ) {
-
-			console.warn( 'options.onComplete will be deprecated. use \'then\' instead' );
-
-		}
+	return new PromiseLike( ( resolve: () => void ) => {
 
 		if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
 		const _isVisible = isVisible( el );
 		const display     = options.display || 'block';
 		const duration    = options.duration || 400;
-		const onComplete  = options.onComplete  || function () {}; // will be deprecated
 		const onCancelled = options.onCancelled || function () {};
 
 		if ( ! _isVisible ) {
 
-			onComplete(); // will be deprecated
 			resolve();
 			return;
 
@@ -239,11 +250,11 @@ export function slideUp( el, options = {} ) {
 
 			requestAnimationFrame( () => {
 
-				el.style.height            = 0;
-				el.style.paddingTop        = 0;
-				el.style.paddingBottom     = 0;
-				el.style.borderTopWidth    = 0;
-				el.style.borderBottomWidth = 0;
+				el.style.height            = '0';
+				el.style.paddingTop        = '0';
+				el.style.paddingBottom     = '0';
+				el.style.borderTopWidth    = '0';
+				el.style.borderBottomWidth = '0';
 
 			} );
 
@@ -255,7 +266,6 @@ export function slideUp( el, options = {} ) {
 			resetStyle( el );
 			el.style.display = 'none';
 			inAnimItems.remove( el );
-			onComplete(); // will be deprecated
 			resolve();
 
 		}, duration );
@@ -266,7 +276,7 @@ export function slideUp( el, options = {} ) {
 
 }
 
-export function slideStop( el ) {
+export function slideStop( el: HTMLElement ):void {
 
 	const elementObject = inAnimItems.find( el );
 
@@ -290,13 +300,13 @@ export function slideStop( el ) {
 
 }
 
-export function isVisible( el ) {
+export function isVisible( el: HTMLElement ) {
 
 	return el.offsetHeight !== 0;
 
 }
 
-function resetStyle( el ) {
+function resetStyle( el: HTMLElement ) {
 
 	el.style.visibility        = '';
 	el.style.height            = '';
@@ -310,13 +320,13 @@ function resetStyle( el ) {
 
 }
 
-function getDefaultStyles( el, defaultDisplay ) {
+function getDefaultStyles( el: HTMLElement, defaultDisplay: string = 'block' ) {
 
 	const defaultStyle = el.getAttribute( 'style' ) || '';
 	const style = window.getComputedStyle( el );
 
 	el.style.visibility = 'hidden';
-	el.style.display    = defaultDisplay || 'block';
+	el.style.display    = defaultDisplay;
 
 	const width = pxToNumber( style.getPropertyValue( 'width' ) );
 
@@ -346,7 +356,7 @@ function getDefaultStyles( el, defaultDisplay ) {
 
 }
 
-function pxToNumber( px ) {
+function pxToNumber( px: string ) {
 
 	return + px.replace( /px/, '' );
 

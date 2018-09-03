@@ -1,44 +1,32 @@
-import babel from 'rollup-plugin-babel'
-
+import typescript from 'rollup-plugin-typescript2';
+import pkg from './package.json';
 const license = `/*!
  * slide-anim
  * https://github.com/yomotsu/slide-anim
  * (c) 2017 @yomotsu
  * Released under the MIT License.
- */`
+ */`;
 
 export default {
-	input: 'src/slide-anim.js',
+	input: 'src/index.ts',
 	output: [
 		{
 			format: 'umd',
 			name: 'slideAnim',
 			file: 'dist/slide-anim.js',
-			banner: license
+			banner: license,
+			indent: '\t',
 		},
 		{
 			format: 'es',
-			file: 'dist/slide-anim.module.js',
-			banner: license
+			file: pkg.module,
+			banner: license,
+			indent: '\t',
 		}
 	],
-	indent: '\t',
-	sourceMap: false,
 	plugins: [
-		babel( {
-			exclude: 'node_modules/**',
-			presets: [
-				[ 'env', {
-					targets: {
-						browsers: [
-							'last 2 versions',
-							'ie >= 11'
-						]
-					},
-					loose: true,
-					modules: false
-				} ]
-			]
-		} )
-	]
+		typescript( {
+			typescript: require( 'typescript' ),
+		} ),
+	],
 };

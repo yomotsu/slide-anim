@@ -3,23 +3,22 @@
   "version": "1.2.0",
   "author": "Yomotsu",
   "license": "MIT",
-  "main": "dist/slide-anim.js",
   "repository": "yomotsu/slide-anim",
   "jsnext:main": "dist/slide-anim.module.js",
   "module": "dist/slide-anim.module.js",
+  "main": "dist/slide-anim.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "1.6.1",
-    "rollup": "^0.52.2",
-    "rollup-plugin-babel": "3.0.2",
+    "rollup": "^0.65.0",
+    "rollup-plugin-typescript2": "^0.17.0",
     "rollup-watch": "^4.3.1",
-    "uglify-js": "^3.2.2"
+    "typescript": "^3.0.3",
+    "uglify-js": "^3.4.9"
   },
   "scripts": {
     "dev": "npm run watch",
     "watch": "rollup --config --watch",
-    "build": "rollup --config",
-    "release": "rollup --config && uglifyjs dist/slide-anim.js -cm --preamble \"/*!\n * slide-anim\n * https://github.com/yomotsu/slide-anim\n * (c) 2017 @yomotsu\n * Released under the MIT License.\n */\" > dist/slide-anim.min.js"
+    "build": "rollup --config && uglifyjs dist/slide-anim.js --comments '/^/*!/' > dist/slide-anim.min.js"
   },
   "keywords": [
     "slide",
