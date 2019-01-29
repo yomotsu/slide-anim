@@ -1,16 +1,16 @@
 import { PromiseLike } from './PromiseLike';
 import { inAnimItems } from './in-anim-items';
 
-const CSS_EASEOUT_EXPO: string = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
+const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
 
-interface SlideDownOption {
-	endHeight?: number,
-	display?: string,
-	duration?: number,
-	onCancelled?: () => any,
+export interface SlideDownOption {
+	endHeight?: number;
+	display?: string;
+	duration?: number;
+	onCancelled?: () => any;
 }
 
-export function slideDown( el: HTMLElement, options:SlideDownOption = {} ) {
+export function slideDown( el: HTMLElement, options: SlideDownOption = {} ) {
 
 	return new PromiseLike( ( resolve: () => void ) => {
 
@@ -74,7 +74,7 @@ export function slideDown( el: HTMLElement, options:SlideDownOption = {} ) {
 
 		}
 
-		requestAnimationFrame( () => {
+		requestAnimationFrame( (): void => {
 
 			el.style.height            = startHeight;
 			el.style.paddingTop        = startPaddingTop;
@@ -87,7 +87,7 @@ export function slideDown( el: HTMLElement, options:SlideDownOption = {} ) {
 			el.style.transition        = cssTransition;
 			el.style.webkitTransition  = cssTransition;
 
-			requestAnimationFrame( () => {
+			requestAnimationFrame( (): void => {
 
 				el.style.height            = endHeight;
 				el.style.paddingTop        = endPaddingTop;
@@ -99,7 +99,7 @@ export function slideDown( el: HTMLElement, options:SlideDownOption = {} ) {
 
 		} );
 
-		const timeoutId = setTimeout( () => {
+		const timeoutId = setTimeout( (): void => {
 
 			// el.setAttribute( 'style', defaultStyle );
 			resetStyle( el );
@@ -122,7 +122,7 @@ export function slideDown( el: HTMLElement, options:SlideDownOption = {} ) {
 
 }
 
-interface SlieUpOptions {
+export interface SlieUpOptions {
 	display?: string,
 	duration?: number,
 	onCancelled?: () => any,
@@ -164,13 +164,13 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 
 		const startHeight = ! isBorderBox ?
 			`${ contentHeight - paddingTop - paddingBottom }px` :
-			`${ contentHeight + borderTop + borderBottom }px`;
+			`${ contentHeight + borderTop  + borderBottom  }px`;
 		const startPaddingTop        = `${ paddingTop    }px`;
 		const startPaddingBottom     = `${ paddingBottom }px`;
 		const startBorderTopWidth    = `${ borderTop     }px`;
 		const startBorderBottomWidth = `${ borderBottom  }px`;
 
-		requestAnimationFrame( () => {
+		requestAnimationFrame( (): void => {
 
 			el.style.height            = startHeight;
 			el.style.paddingTop        = startPaddingTop;
@@ -182,7 +182,7 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 			el.style.transition        = cssTransition;
 			el.style.webkitTransition  = cssTransition;
 
-			requestAnimationFrame( () => {
+			requestAnimationFrame( (): void => {
 
 				el.style.height            = '0';
 				el.style.paddingTop        = '0';
@@ -194,7 +194,7 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 
 		} );
 
-		const timeoutId = setTimeout( () => {
+		const timeoutId = setTimeout( (): void => {
 
 			// el.setAttribute( 'style', defaultStyle );
 			resetStyle( el );
@@ -210,7 +210,7 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 
 }
 
-export function slideStop( el: HTMLElement ):void {
+export function slideStop( el: HTMLElement ): void {
 
 	const elementObject = inAnimItems.find( el );
 
@@ -234,13 +234,13 @@ export function slideStop( el: HTMLElement ):void {
 
 }
 
-export function isVisible( el: HTMLElement ) {
+export function isVisible( el: HTMLElement ): boolean {
 
 	return el.offsetHeight !== 0;
 
 }
 
-function resetStyle( el: HTMLElement ) {
+function resetStyle( el: HTMLElement ): void {
 
 	el.style.visibility        = '';
 	el.style.height            = '';
@@ -254,7 +254,15 @@ function resetStyle( el: HTMLElement ) {
 
 }
 
-function getDefaultStyles( el: HTMLElement, defaultDisplay: string = 'block' ) {
+interface DefaultStyles {
+	height: number;
+	paddingTop: number;
+	paddingBottom: number;
+	borderTop: number;
+	borderBottom: number;
+}
+
+function getDefaultStyles( el: HTMLElement, defaultDisplay: string = 'block' ): DefaultStyles {
 
 	const defaultStyle = el.getAttribute( 'style' ) || '';
 	const style = window.getComputedStyle( el );
@@ -290,7 +298,7 @@ function getDefaultStyles( el: HTMLElement, defaultDisplay: string = 'block' ) {
 
 }
 
-function pxToNumber( px: string ) {
+function pxToNumber( px: string ): number {
 
 	return + px.replace( /px/, '' );
 

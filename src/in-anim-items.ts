@@ -14,7 +14,7 @@ export const inAnimItems = {
 		defaultStyle: string,
 		timeoutId: any, // number
 		onCancelled: any
-	) {
+	): void {
 
 		const inAnimItem: InAnimItem = { el, defaultStyle, timeoutId, onCancelled }
 		this.remove( el );
@@ -22,7 +22,7 @@ export const inAnimItems = {
 
 	},
 
-	remove( el: HTMLElement ) {
+	remove( el: HTMLElement ): void {
 
 		const index = inAnimItems.findIndex( el );
 
@@ -44,9 +44,9 @@ export const inAnimItems = {
 
 	findIndex( el: HTMLElement ): number {
 
-		let index = - 1;
+		let index: number = - 1;
 
-		pool.some( ( item: InAnimItem, i: number ) => {
+		pool.some( ( item: InAnimItem, i: number ): boolean => {
 
 			if ( item.el === el ) {
 
