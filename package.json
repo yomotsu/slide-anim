@@ -9,16 +9,15 @@
   "main": "dist/slide-anim.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "rollup": "^0.65.0",
-    "rollup-plugin-typescript2": "^0.17.0",
+    "rollup": "^1.1.2",
+    "rollup-plugin-typescript2": "^0.19.2",
     "rollup-watch": "^4.3.1",
-    "typescript": "^3.0.3",
-    "uglify-js": "^3.4.9"
+    "terser": "^3.14.1",
+    "typescript": "^3.2.4"
   },
   "scripts": {
-    "dev": "npm run watch",
-    "watch": "rollup --config --watch",
-    "build": "rollup --config && uglifyjs dist/slide-anim.js --comments '/^/*!/' > dist/slide-anim.min.js"
+    "dev": "rollup --config --watch",
+    "build": "rollup --config && terser 'dist/slide-anim.js' -o 'dist/slide-anim.min.js' --comments '/^!/'"
   },
   "keywords": [
     "slide",

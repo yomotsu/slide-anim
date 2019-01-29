@@ -1,5 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import pkg from './package.json';
+
 const license = `/*!
  * slide-anim
  * https://github.com/yomotsu/slide-anim
@@ -13,7 +14,7 @@ export default {
 		{
 			format: 'umd',
 			name: 'slideAnim',
-			file: 'dist/slide-anim.js',
+			file: pkg.main,
 			banner: license,
 			indent: '\t',
 		},
