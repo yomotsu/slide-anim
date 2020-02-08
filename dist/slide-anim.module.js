@@ -278,4 +278,4 @@ function pxToNumber(px) {
     return +px.replace(/px/, '');
 }
 
-export { slideDown, slideUp, slideStop, isVisible };
+export { isVisible, slideDown, slideStop, slideUp };

@@ -8,7 +8,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
 	(global = global || self, factory(global.slideAnim = {}));
-}(this, function (exports) { 'use strict';
+}(this, (function (exports) { 'use strict';
 
 	var global = window;
 	var isPromiseSuppoted = typeof global.Promise === 'function';
@@ -284,11 +284,11 @@
 	    return +px.replace(/px/, '');
 	}
 
-	exports.slideDown = slideDown;
-	exports.slideUp = slideUp;
-	exports.slideStop = slideStop;
 	exports.isVisible = isVisible;
+	exports.slideDown = slideDown;
+	exports.slideStop = slideStop;
+	exports.slideUp = slideUp;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
