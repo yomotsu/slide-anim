@@ -84,7 +84,7 @@ e.g.
 slideUp( element, {
 	duration: 800,
 	display: 'flex'
-);
+} );
 ```
 
 ### Callbacks
