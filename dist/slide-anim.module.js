@@ -70,6 +70,7 @@ function slideDown(el, options) {
         var defaultStyles = getDefaultStyles(el, display);
         var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
         var contentHeight = defaultStyles.height;
+        var minHeight = defaultStyles.minHeight;
         var paddingTop = defaultStyles.paddingTop;
         var paddingBottom = defaultStyles.paddingBottom;
         var borderTop = defaultStyles.borderTop;
@@ -78,10 +79,12 @@ function slideDown(el, options) {
         var cssEasing = CSS_EASEOUT_EXPO;
         var cssTransition = [
             "height " + cssDuration + " " + cssEasing,
+            "min-height " + cssDuration + " " + cssEasing,
             "padding " + cssDuration + " " + cssEasing,
             "border-width " + cssDuration + " " + cssEasing
         ].join();
         var startHeight = _isVisible ? style.height : '0px';
+        var startMinHeight = _isVisible ? style.minHeight : '0px';
         var startPaddingTop = _isVisible ? style.paddingTop : '0px';
         var startPaddingBottom = _isVisible ? style.paddingBottom : '0px';
         var startBorderTopWidth = _isVisible ? style.borderTopWidth : '0px';
@@ -93,6 +96,7 @@ function slideDown(el, options) {
                 contentHeight - paddingTop - paddingBottom + "px" :
                 contentHeight + borderTop + borderBottom + "px";
         })();
+        var endMinHeight = minHeight + "px";
         var endPaddingTop = paddingTop + "px";
         var endPaddingBottom = paddingBottom + "px";
         var endBorderTopWidth = borderTop + "px";
@@ -107,6 +111,7 @@ function slideDown(el, options) {
         }
         requestAnimationFrame(function () {
             el.style.height = startHeight;
+            el.style.minHeight = startMinHeight;
             el.style.paddingTop = startPaddingTop;
             el.style.paddingBottom = startPaddingBottom;
             el.style.borderTopWidth = startBorderTopWidth;
@@ -118,6 +123,7 @@ function slideDown(el, options) {
             el.style.webkitTransition = cssTransition;
             requestAnimationFrame(function () {
                 el.style.height = endHeight;
+                el.style.minHeight = endMinHeight;
                 el.style.paddingTop = endPaddingTop;
                 el.style.paddingBottom = endPaddingBottom;
                 el.style.borderTopWidth = endBorderTopWidth;
@@ -153,6 +159,7 @@ function slideUp(el, options) {
         var defaultStyle = el.getAttribute('style') || '';
         var style = window.getComputedStyle(el);
         var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
+        var minHeight = pxToNumber(style.getPropertyValue('min-height'));
         var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
         var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
         var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
@@ -168,12 +175,14 @@ function slideUp(el, options) {
         var startHeight = !isBorderBox ?
             contentHeight - paddingTop - paddingBottom + "px" :
             contentHeight + borderTop + borderBottom + "px";
+        var startMinHeight = minHeight + "px";
         var startPaddingTop = paddingTop + "px";
         var startPaddingBottom = paddingBottom + "px";
         var startBorderTopWidth = borderTop + "px";
         var startBorderBottomWidth = borderBottom + "px";
         requestAnimationFrame(function () {
             el.style.height = startHeight;
+            el.style.minHeight = startMinHeight;
             el.style.paddingTop = startPaddingTop;
             el.style.paddingBottom = startPaddingBottom;
             el.style.borderTopWidth = startBorderTopWidth;
@@ -184,6 +193,7 @@ function slideUp(el, options) {
             el.style.webkitTransition = cssTransition;
             requestAnimationFrame(function () {
                 el.style.height = '0';
+                el.style.minHeight = '0';
                 el.style.paddingTop = '0';
                 el.style.paddingBottom = '0';
                 el.style.borderTopWidth = '0';
@@ -224,6 +234,7 @@ function isVisible(el) {
 function resetStyle(el) {
     el.style.visibility = '';
     el.style.height = '';
+    el.style.minHeight = '';
     el.style.paddingTop = '';
     el.style.paddingBottom = '';
     el.style.borderTopWidth = '';
@@ -242,10 +253,12 @@ function getDefaultStyles(el, defaultDisplay) {
     el.style.position = 'absolute';
     el.style.width = width + "px";
     el.style.height = '';
+    el.style.minHeight = '';
     el.style.paddingTop = '';
     el.style.paddingBottom = '';
     el.style.borderTopWidth = '';
     el.style.borderBottomWidth = '';
+    var minHeight = pxToNumber(style.getPropertyValue('min-height'));
     var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
     var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
     var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
@@ -254,6 +267,7 @@ function getDefaultStyles(el, defaultDisplay) {
     el.setAttribute('style', defaultStyle);
     return {
         height: height,
+        minHeight: minHeight,
         paddingTop: paddingTop,
         paddingBottom: paddingBottom,
         borderTop: borderTop,
