@@ -9,11 +9,11 @@
   "main": "dist/slide-anim.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "rollup": "^1.1.2",
-    "rollup-plugin-typescript2": "^0.19.2",
+    "rollup": "^1.31.0",
+    "rollup-plugin-typescript2": "^0.25.3",
     "rollup-watch": "^4.3.1",
-    "terser": "^3.14.1",
-    "typescript": "^3.2.4"
+    "terser": "^4.6.3",
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "dev": "rollup --config --watch",
