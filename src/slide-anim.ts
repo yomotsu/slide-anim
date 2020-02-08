@@ -28,6 +28,7 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ) {
 		const isBorderBox = /border-box/.test( style.getPropertyValue( 'box-sizing' ) );
 
 		const contentHeight = defaultStyles.height;
+		const minHeight     = defaultStyles.minHeight;
 		const paddingTop    = defaultStyles.paddingTop;
 		const paddingBottom = defaultStyles.paddingBottom;
 		const borderTop     = defaultStyles.borderTop;
@@ -37,11 +38,13 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ) {
 		const cssEasing = CSS_EASEOUT_EXPO;
 		const cssTransition = [
 			`height ${ cssDuration } ${ cssEasing }`,
+			`min-height ${ cssDuration } ${ cssEasing }`,
 			`padding ${ cssDuration } ${ cssEasing }`,
 			`border-width ${ cssDuration } ${ cssEasing }`
 		].join();
 
 		const startHeight            = _isVisible ? style.height            : '0px';
+		const startMinHeight         = _isVisible ? style.minHeight         : '0px';
 		const startPaddingTop        = _isVisible ? style.paddingTop        : '0px';
 		const startPaddingBottom     = _isVisible ? style.paddingBottom     : '0px';
 		const startBorderTopWidth    = _isVisible ? style.borderTopWidth    : '0px';
@@ -56,6 +59,7 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ) {
 				`${ contentHeight + borderTop + borderBottom }px`;
 
 		} )();
+		const endMinHeight         = `${ minHeight     }px`;
 		const endPaddingTop        = `${ paddingTop    }px`;
 		const endPaddingBottom     = `${ paddingBottom }px`;
 		const endBorderTopWidth    = `${ borderTop     }px`;
@@ -77,6 +81,7 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ) {
 		requestAnimationFrame( (): void => {
 
 			el.style.height            = startHeight;
+			el.style.minHeight         = startMinHeight;
 			el.style.paddingTop        = startPaddingTop;
 			el.style.paddingBottom     = startPaddingBottom;
 			el.style.borderTopWidth    = startBorderTopWidth;
@@ -90,6 +95,7 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ) {
 			requestAnimationFrame( (): void => {
 
 				el.style.height            = endHeight;
+				el.style.minHeight         = endMinHeight;
 				el.style.paddingTop        = endPaddingTop;
 				el.style.paddingBottom     = endPaddingBottom;
 				el.style.borderTopWidth    = endBorderTopWidth;
@@ -149,6 +155,7 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 		const defaultStyle = el.getAttribute( 'style' ) || '';
 		const style = window.getComputedStyle( el );
 		const isBorderBox = /border-box/.test( style.getPropertyValue( 'box-sizing' ) );
+		const minHeight     = pxToNumber( style.getPropertyValue( 'min-height' )  );
 		const paddingTop    = pxToNumber( style.getPropertyValue( 'padding-top' )  );
 		const paddingBottom = pxToNumber( style.getPropertyValue( 'padding-bottom' )  );
 		const borderTop     = pxToNumber( style.getPropertyValue( 'border-top-width' )  );
@@ -165,6 +172,7 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 		const startHeight = ! isBorderBox ?
 			`${ contentHeight - paddingTop - paddingBottom }px` :
 			`${ contentHeight + borderTop  + borderBottom  }px`;
+		const startMinHeight         = `${ minHeight     }px`;
 		const startPaddingTop        = `${ paddingTop    }px`;
 		const startPaddingBottom     = `${ paddingBottom }px`;
 		const startBorderTopWidth    = `${ borderTop     }px`;
@@ -173,6 +181,7 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 		requestAnimationFrame( (): void => {
 
 			el.style.height            = startHeight;
+			el.style.minHeight         = startMinHeight;
 			el.style.paddingTop        = startPaddingTop;
 			el.style.paddingBottom     = startPaddingBottom;
 			el.style.borderTopWidth    = startBorderTopWidth;
@@ -185,6 +194,7 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
 			requestAnimationFrame( (): void => {
 
 				el.style.height            = '0';
+				el.style.minHeight         = '0';
 				el.style.paddingTop        = '0';
 				el.style.paddingBottom     = '0';
 				el.style.borderTopWidth    = '0';
@@ -244,6 +254,7 @@ function resetStyle( el: HTMLElement ): void {
 
 	el.style.visibility        = '';
 	el.style.height            = '';
+	el.style.minHeight         = '';
 	el.style.paddingTop        = '';
 	el.style.paddingBottom     = '';
 	el.style.borderTopWidth    = '';
@@ -256,6 +267,7 @@ function resetStyle( el: HTMLElement ): void {
 
 interface DefaultStyles {
 	height: number;
+	minHeight: number;
 	paddingTop: number;
 	paddingBottom: number;
 	borderTop: number;
@@ -275,11 +287,13 @@ function getDefaultStyles( el: HTMLElement, defaultDisplay: string = 'block' ): 
 	el.style.position = 'absolute';
 	el.style.width    = `${ width }px`;
 	el.style.height            = '';
+	el.style.minHeight         = '';
 	el.style.paddingTop        = '';
 	el.style.paddingBottom     = '';
 	el.style.borderTopWidth    = '';
 	el.style.borderBottomWidth = '';
 
+	const minHeight     = pxToNumber( style.getPropertyValue( 'min-height' ) );
 	const paddingTop    = pxToNumber( style.getPropertyValue( 'padding-top' ) );
 	const paddingBottom = pxToNumber( style.getPropertyValue( 'padding-bottom' ) );
 	const borderTop     = pxToNumber( style.getPropertyValue( 'border-top-width' ) );
@@ -290,6 +304,7 @@ function getDefaultStyles( el: HTMLElement, defaultDisplay: string = 'block' ): 
 
 	return {
 		height,
+		minHeight,
 		paddingTop,
 		paddingBottom,
 		borderTop,
