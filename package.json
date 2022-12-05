@@ -4,16 +4,16 @@
   "author": "Yomotsu",
   "license": "MIT",
   "repository": "yomotsu/slide-anim",
+  "main": "dist/slide-anim.js",
   "jsnext:main": "dist/slide-anim.module.js",
   "module": "dist/slide-anim.module.js",
-  "main": "dist/slide-anim.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "rollup": "^1.31.0",
-    "rollup-plugin-typescript2": "^0.25.3",
-    "rollup-watch": "^4.3.1",
-    "terser": "^4.6.3",
-    "typescript": "^3.7.5"
+    "@rollup/plugin-typescript": "^10.0.1",
+    "rollup": "^3.5.1",
+    "terser": "^5.16.1",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.3"
   },
   "scripts": {
     "dev": "rollup --config --watch",
