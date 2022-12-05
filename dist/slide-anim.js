@@ -7,49 +7,31 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(global = global || self, factory(global.slideAnim = {}));
-}(this, (function (exports) { 'use strict';
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.slideAnim = {}));
+})(this, (function (exports) { 'use strict';
 
-	var global = window;
-	var isPromiseSuppoted = typeof global.Promise === 'function';
-	var PromiseLike = isPromiseSuppoted ? global.Promise : (function () {
-	    function PromiseLike(executor) {
-	        var callback = function () { };
-	        var resolve = function () {
-	            callback();
-	        };
-	        executor(resolve);
-	        return {
-	            then: function (_callback) {
-	                callback = _callback;
-	            }
-	        };
-	    }
-	    return PromiseLike;
-	}());
-
-	var pool = [];
-	var inAnimItems = {
-	    add: function (el, defaultStyle, timeoutId, onCancelled) {
-	        var inAnimItem = { el: el, defaultStyle: defaultStyle, timeoutId: timeoutId, onCancelled: onCancelled };
+	const pool = [];
+	const inAnimItems = {
+	    add(el, defaultStyle, timeoutId, onCancelled) {
+	        const inAnimItem = { el, defaultStyle, timeoutId, onCancelled };
 	        this.remove(el);
 	        pool.push(inAnimItem);
 	    },
-	    remove: function (el) {
-	        var index = inAnimItems.findIndex(el);
+	    remove(el) {
+	        const index = inAnimItems.findIndex(el);
 	        if (index === -1)
 	            return;
-	        var inAnimItem = pool[index];
+	        const inAnimItem = pool[index];
 	        clearTimeout(inAnimItem.timeoutId);
 	        inAnimItem.onCancelled();
 	        pool.splice(index, 1);
 	    },
-	    find: function (el) {
+	    find(el) {
 	        return pool[inAnimItems.findIndex(el)];
 	    },
-	    findIndex: function (el) {
-	        var index = -1;
-	        pool.some(function (item, i) {
+	    findIndex(el) {
+	        let index = -1;
+	        pool.some((item, i) => {
 	            if (item.el === el) {
 	                index = i;
 	                return true;
@@ -60,53 +42,52 @@
 	    }
 	};
 
-	var CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
-	function slideDown(el, options) {
-	    if (options === void 0) { options = {}; }
-	    return new PromiseLike(function (resolve) {
+	const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
+	function slideDown(el, options = {}) {
+	    return new Promise((resolve) => {
 	        if (inAnimItems.findIndex(el) !== -1)
 	            return;
-	        var _isVisible = isVisible(el);
-	        var hasEndHeight = typeof options.endHeight === 'number';
-	        var display = options.display || 'block';
-	        var duration = options.duration || 400;
-	        var onCancelled = options.onCancelled || function () { };
-	        var defaultStyle = el.getAttribute('style') || '';
-	        var style = window.getComputedStyle(el);
-	        var defaultStyles = getDefaultStyles(el, display);
-	        var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
-	        var contentHeight = defaultStyles.height;
-	        var minHeight = defaultStyles.minHeight;
-	        var paddingTop = defaultStyles.paddingTop;
-	        var paddingBottom = defaultStyles.paddingBottom;
-	        var borderTop = defaultStyles.borderTop;
-	        var borderBottom = defaultStyles.borderBottom;
-	        var cssDuration = duration + "ms";
-	        var cssEasing = CSS_EASEOUT_EXPO;
-	        var cssTransition = [
-	            "height " + cssDuration + " " + cssEasing,
-	            "min-height " + cssDuration + " " + cssEasing,
-	            "padding " + cssDuration + " " + cssEasing,
-	            "border-width " + cssDuration + " " + cssEasing
+	        const _isVisible = isVisible(el);
+	        const hasEndHeight = typeof options.endHeight === 'number';
+	        const display = options.display || 'block';
+	        const duration = options.duration || 400;
+	        const onCancelled = options.onCancelled || function () { };
+	        const defaultStyle = el.getAttribute('style') || '';
+	        const style = window.getComputedStyle(el);
+	        const defaultStyles = getDefaultStyles(el, display);
+	        const isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
+	        const contentHeight = defaultStyles.height;
+	        const minHeight = defaultStyles.minHeight;
+	        const paddingTop = defaultStyles.paddingTop;
+	        const paddingBottom = defaultStyles.paddingBottom;
+	        const borderTop = defaultStyles.borderTop;
+	        const borderBottom = defaultStyles.borderBottom;
+	        const cssDuration = `${duration}ms`;
+	        const cssEasing = CSS_EASEOUT_EXPO;
+	        const cssTransition = [
+	            `height ${cssDuration} ${cssEasing}`,
+	            `min-height ${cssDuration} ${cssEasing}`,
+	            `padding ${cssDuration} ${cssEasing}`,
+	            `border-width ${cssDuration} ${cssEasing}`
 	        ].join();
-	        var startHeight = _isVisible ? style.height : '0px';
-	        var startMinHeight = _isVisible ? style.minHeight : '0px';
-	        var startPaddingTop = _isVisible ? style.paddingTop : '0px';
-	        var startPaddingBottom = _isVisible ? style.paddingBottom : '0px';
-	        var startBorderTopWidth = _isVisible ? style.borderTopWidth : '0px';
-	        var startBorderBottomWidth = _isVisible ? style.borderBottomWidth : '0px';
-	        var endHeight = (function () {
+	        const startHeight = _isVisible ? style.height : '0px';
+	        const startMinHeight = _isVisible ? style.minHeight : '0px';
+	        const startPaddingTop = _isVisible ? style.paddingTop : '0px';
+	        const startPaddingBottom = _isVisible ? style.paddingBottom : '0px';
+	        const startBorderTopWidth = _isVisible ? style.borderTopWidth : '0px';
+	        const startBorderBottomWidth = _isVisible ? style.borderBottomWidth : '0px';
+	        const endHeight = (() => {
 	            if (hasEndHeight)
-	                return options.endHeight + "px";
+	                return `${options.endHeight}px`;
 	            return !isBorderBox ?
-	                contentHeight - paddingTop - paddingBottom + "px" :
-	                contentHeight + borderTop + borderBottom + "px";
+	                `${contentHeight - paddingTop - paddingBottom}px` :
+	                `${contentHeight + borderTop + borderBottom}px`;
 	        })();
-	        var endMinHeight = minHeight + "px";
-	        var endPaddingTop = paddingTop + "px";
-	        var endPaddingBottom = paddingBottom + "px";
-	        var endBorderTopWidth = borderTop + "px";
-	        var endBorderBottomWidth = borderBottom + "px";
+	        const endMinHeight = `${minHeight}px`;
+	        const endPaddingTop = `${paddingTop}px`;
+	        const endPaddingBottom = `${paddingBottom}px`;
+	        const endBorderTopWidth = `${borderTop}px`;
+	        const endBorderBottomWidth = `${borderBottom}px`;
 	        if (startHeight === endHeight &&
 	            startPaddingTop === endPaddingTop &&
 	            startPaddingBottom === endPaddingBottom &&
@@ -115,7 +96,7 @@
 	            resolve();
 	            return;
 	        }
-	        requestAnimationFrame(function () {
+	        requestAnimationFrame(() => {
 	            el.style.height = startHeight;
 	            el.style.minHeight = startMinHeight;
 	            el.style.paddingTop = startPaddingTop;
@@ -127,7 +108,7 @@
 	            el.style.visibility = 'visible';
 	            el.style.transition = cssTransition;
 	            el.style.webkitTransition = cssTransition;
-	            requestAnimationFrame(function () {
+	            requestAnimationFrame(() => {
 	                el.style.height = endHeight;
 	                el.style.minHeight = endMinHeight;
 	                el.style.paddingTop = endPaddingTop;
@@ -136,12 +117,12 @@
 	                el.style.borderBottomWidth = endBorderBottomWidth;
 	            });
 	        });
-	        var timeoutId = setTimeout(function () {
+	        const timeoutId = setTimeout(() => {
 	            resetStyle(el);
 	            el.style.display = display;
 	            if (hasEndHeight) {
-	                el.style.height = options.endHeight + "px";
-	                el.style.overflow = "hidden";
+	                el.style.height = `${options.endHeight}px`;
+	                el.style.overflow = `hidden`;
 	            }
 	            inAnimItems.remove(el);
 	            resolve();
@@ -149,44 +130,43 @@
 	        inAnimItems.add(el, defaultStyle, timeoutId, onCancelled);
 	    });
 	}
-	function slideUp(el, options) {
-	    if (options === void 0) { options = {}; }
-	    return new PromiseLike(function (resolve) {
+	function slideUp(el, options = {}) {
+	    return new Promise((resolve) => {
 	        if (inAnimItems.findIndex(el) !== -1)
 	            return;
-	        var _isVisible = isVisible(el);
-	        var display = options.display || 'block';
-	        var duration = options.duration || 400;
-	        var onCancelled = options.onCancelled || function () { };
+	        const _isVisible = isVisible(el);
+	        const display = options.display || 'block';
+	        const duration = options.duration || 400;
+	        const onCancelled = options.onCancelled || function () { };
 	        if (!_isVisible) {
 	            resolve();
 	            return;
 	        }
-	        var defaultStyle = el.getAttribute('style') || '';
-	        var style = window.getComputedStyle(el);
-	        var isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
-	        var minHeight = pxToNumber(style.getPropertyValue('min-height'));
-	        var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
-	        var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
-	        var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
-	        var borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
-	        var contentHeight = el.scrollHeight;
-	        var cssDuration = duration + 'ms';
-	        var cssEasing = CSS_EASEOUT_EXPO;
-	        var cssTransition = [
-	            "height " + cssDuration + " " + cssEasing,
-	            "padding " + cssDuration + " " + cssEasing,
-	            "border-width " + cssDuration + " " + cssEasing
+	        const defaultStyle = el.getAttribute('style') || '';
+	        const style = window.getComputedStyle(el);
+	        const isBorderBox = /border-box/.test(style.getPropertyValue('box-sizing'));
+	        const minHeight = pxToNumber(style.getPropertyValue('min-height'));
+	        const paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
+	        const paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
+	        const borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
+	        const borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
+	        const contentHeight = el.scrollHeight;
+	        const cssDuration = duration + 'ms';
+	        const cssEasing = CSS_EASEOUT_EXPO;
+	        const cssTransition = [
+	            `height ${cssDuration} ${cssEasing}`,
+	            `padding ${cssDuration} ${cssEasing}`,
+	            `border-width ${cssDuration} ${cssEasing}`
 	        ].join();
-	        var startHeight = !isBorderBox ?
-	            contentHeight - paddingTop - paddingBottom + "px" :
-	            contentHeight + borderTop + borderBottom + "px";
-	        var startMinHeight = minHeight + "px";
-	        var startPaddingTop = paddingTop + "px";
-	        var startPaddingBottom = paddingBottom + "px";
-	        var startBorderTopWidth = borderTop + "px";
-	        var startBorderBottomWidth = borderBottom + "px";
-	        requestAnimationFrame(function () {
+	        const startHeight = !isBorderBox ?
+	            `${contentHeight - paddingTop - paddingBottom}px` :
+	            `${contentHeight + borderTop + borderBottom}px`;
+	        const startMinHeight = `${minHeight}px`;
+	        const startPaddingTop = `${paddingTop}px`;
+	        const startPaddingBottom = `${paddingBottom}px`;
+	        const startBorderTopWidth = `${borderTop}px`;
+	        const startBorderBottomWidth = `${borderBottom}px`;
+	        requestAnimationFrame(() => {
 	            el.style.height = startHeight;
 	            el.style.minHeight = startMinHeight;
 	            el.style.paddingTop = startPaddingTop;
@@ -197,7 +177,7 @@
 	            el.style.overflow = 'hidden';
 	            el.style.transition = cssTransition;
 	            el.style.webkitTransition = cssTransition;
-	            requestAnimationFrame(function () {
+	            requestAnimationFrame(() => {
 	                el.style.height = '0';
 	                el.style.minHeight = '0';
 	                el.style.paddingTop = '0';
@@ -206,7 +186,7 @@
 	                el.style.borderBottomWidth = '0';
 	            });
 	        });
-	        var timeoutId = setTimeout(function () {
+	        const timeoutId = setTimeout(() => {
 	            resetStyle(el);
 	            el.style.display = 'none';
 	            inAnimItems.remove(el);
@@ -216,15 +196,15 @@
 	    });
 	}
 	function slideStop(el) {
-	    var elementObject = inAnimItems.find(el);
+	    const elementObject = inAnimItems.find(el);
 	    if (!elementObject)
 	        return;
-	    var style = window.getComputedStyle(el);
-	    var height = style.height;
-	    var paddingTop = style.paddingTop;
-	    var paddingBottom = style.paddingBottom;
-	    var borderTopWidth = style.borderTopWidth;
-	    var borderBottomWidth = style.borderBottomWidth;
+	    const style = window.getComputedStyle(el);
+	    const height = style.height;
+	    const paddingTop = style.paddingTop;
+	    const paddingBottom = style.paddingBottom;
+	    const borderTopWidth = style.borderTopWidth;
+	    const borderBottomWidth = style.borderBottomWidth;
 	    resetStyle(el);
 	    el.style.height = height;
 	    el.style.paddingTop = paddingTop;
@@ -249,35 +229,34 @@
 	    el.style.transition = '';
 	    el.style.webkitTransition = '';
 	}
-	function getDefaultStyles(el, defaultDisplay) {
-	    if (defaultDisplay === void 0) { defaultDisplay = 'block'; }
-	    var defaultStyle = el.getAttribute('style') || '';
-	    var style = window.getComputedStyle(el);
+	function getDefaultStyles(el, defaultDisplay = 'block') {
+	    const defaultStyle = el.getAttribute('style') || '';
+	    const style = window.getComputedStyle(el);
 	    el.style.visibility = 'hidden';
 	    el.style.display = defaultDisplay;
-	    var width = pxToNumber(style.getPropertyValue('width'));
+	    const width = pxToNumber(style.getPropertyValue('width'));
 	    el.style.position = 'absolute';
-	    el.style.width = width + "px";
+	    el.style.width = `${width}px`;
 	    el.style.height = '';
 	    el.style.minHeight = '';
 	    el.style.paddingTop = '';
 	    el.style.paddingBottom = '';
 	    el.style.borderTopWidth = '';
 	    el.style.borderBottomWidth = '';
-	    var minHeight = pxToNumber(style.getPropertyValue('min-height'));
-	    var paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
-	    var paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
-	    var borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
-	    var borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
-	    var height = el.scrollHeight;
+	    const minHeight = pxToNumber(style.getPropertyValue('min-height'));
+	    const paddingTop = pxToNumber(style.getPropertyValue('padding-top'));
+	    const paddingBottom = pxToNumber(style.getPropertyValue('padding-bottom'));
+	    const borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
+	    const borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
+	    const height = el.scrollHeight;
 	    el.setAttribute('style', defaultStyle);
 	    return {
-	        height: height,
-	        minHeight: minHeight,
-	        paddingTop: paddingTop,
-	        paddingBottom: paddingBottom,
-	        borderTop: borderTop,
-	        borderBottom: borderBottom
+	        height,
+	        minHeight,
+	        paddingTop,
+	        paddingBottom,
+	        borderTop,
+	        borderBottom
 	    };
 	}
 	function pxToNumber(px) {
@@ -289,6 +268,4 @@
 	exports.slideStop = slideStop;
 	exports.slideUp = slideUp;
 
-	Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
+}));
