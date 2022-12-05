@@ -1,4 +1,3 @@
-import { PromiseLike } from './PromiseLike';
 import { inAnimItems } from './in-anim-items';
 
 const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
@@ -10,9 +9,9 @@ export interface SlideDownOption {
 	onCancelled?: () => any;
 }
 
-export function slideDown( el: HTMLElement, options: SlideDownOption = {} ) {
+export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Promise<void> {
 
-	return new PromiseLike( ( resolve: () => void ) => {
+	return new Promise( ( resolve ) => {
 
 		if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 
@@ -134,9 +133,9 @@ export interface SlieUpOptions {
 	onCancelled?: () => any,
 };
 
-export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ) {
+export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ): Promise<void> {
 
-	return new PromiseLike( ( resolve: () => void ) => {
+	return new Promise( ( resolve ) => {
 
 		if ( inAnimItems.findIndex( el ) !== - 1 ) return;
 

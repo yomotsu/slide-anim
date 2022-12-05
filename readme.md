@@ -89,12 +89,7 @@ slideUp( element, {
 
 ### Callbacks
 
-`slideDown` and `slideUp` return either promise or Promise-ish object.
-
-- If Promise is available: returns a promise object.
-- If Promise is not available: returns a plain object with `then` method as a callback function.
-
-Thus, following code works regardless of whether Promise is suppoted or not.
+`slideDown` and `slideUp` return a Promise.
 
 e.g
 ```javascript
