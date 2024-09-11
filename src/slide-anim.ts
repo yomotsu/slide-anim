@@ -1,13 +1,14 @@
 import { inAnimItems } from './in-anim-items';
 
-const CSS_EASEOUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
+const CSS_EASE_OUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
 
 export interface SlideDownOption {
-	endHeight?: number;
-	display?: string;
-	duration?: number;
-	onCancelled?: () => any;
-}
+  endHeight?: number;
+  display?: string;
+	ease?: string;
+	duration?: number | ((outerHeight: number) => number);
+  onCancelled?: () => any;
+};
 
 export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Promise<void> {
 
@@ -18,7 +19,6 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Pro
 		const _isVisible: boolean = isVisible( el );
 		const hasEndHeight: boolean = typeof options.endHeight === 'number';
 		const display: string  = options.display || 'block';
-		const duration: number = options.duration || 400;
 		const onCancelled = options.onCancelled || function () {};
 
 		const defaultStyle = el.getAttribute( 'style' ) || '';
@@ -32,15 +32,6 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Pro
 		const paddingBottom = defaultStyles.paddingBottom;
 		const borderTop     = defaultStyles.borderTop;
 		const borderBottom  = defaultStyles.borderBottom;
-
-		const cssDuration = `${ duration }ms`;
-		const cssEasing = CSS_EASEOUT_EXPO;
-		const cssTransition = [
-			`height ${ cssDuration } ${ cssEasing }`,
-			`min-height ${ cssDuration } ${ cssEasing }`,
-			`padding ${ cssDuration } ${ cssEasing }`,
-			`border-width ${ cssDuration } ${ cssEasing }`
-		].join();
 
 		const startHeight            = _isVisible ? style.height            : '0px';
 		const startMinHeight         = _isVisible ? style.minHeight         : '0px';
@@ -76,6 +67,17 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Pro
 			return;
 
 		}
+
+		const outerHeight = isBorderBox ? contentHeight : contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
+		const duration = typeof options.duration === "function" ? options.duration( outerHeight ) : options.duration || 400;
+		const cssDuration = `${ duration }ms`;
+		const cssEasing = options.ease || CSS_EASE_OUT_EXPO;
+		const cssTransition = [
+			`height ${ cssDuration } ${ cssEasing }`,
+			`min-height ${ cssDuration } ${ cssEasing }`,
+			`padding ${ cssDuration } ${ cssEasing }`,
+			`border-width ${ cssDuration } ${ cssEasing }`
+		].join();
 
 		requestAnimationFrame( (): void => {
 
@@ -126,13 +128,14 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Pro
 
 }
 
-export interface SlieUpOptions {
-	display?: string,
-	duration?: number,
-	onCancelled?: () => any,
+export interface SlideUpOptions {
+  display?: string;
+	ease?: string;
+	duration?: number | ((outerHeight: number) => number);
+  onCancelled?: () => any;
 };
 
-export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ): Promise<void> {
+export function slideUp( el: HTMLElement, options: SlideUpOptions = {} ): Promise<void> {
 
 	return new Promise( ( resolve ) => {
 
@@ -140,7 +143,6 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ): Promise
 
 		const _isVisible = isVisible( el );
 		const display     = options.display || 'block';
-		const duration    = options.duration || 400;
 		const onCancelled = options.onCancelled || function () {};
 
 		if ( ! _isVisible ) {
@@ -159,13 +161,6 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ): Promise
 		const borderTop     = pxToNumber( style.getPropertyValue( 'border-top-width' )  );
 		const borderBottom  = pxToNumber( style.getPropertyValue( 'border-bottom-width' )  );
 		const contentHeight = el.scrollHeight;
-		const cssDuration = duration + 'ms';
-		const cssEasing = CSS_EASEOUT_EXPO;
-		const cssTransition = [
-			`height ${ cssDuration } ${ cssEasing }`,
-			`padding ${ cssDuration } ${ cssEasing }`,
-			`border-width ${ cssDuration } ${ cssEasing }`
-		].join();
 
 		const startHeight = ! isBorderBox ?
 			`${ contentHeight - paddingTop - paddingBottom }px` :
@@ -175,6 +170,16 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ): Promise
 		const startPaddingBottom     = `${ paddingBottom }px`;
 		const startBorderTopWidth    = `${ borderTop     }px`;
 		const startBorderBottomWidth = `${ borderBottom  }px`;
+
+		const outerHeight = isBorderBox ? contentHeight : contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
+		const duration = typeof options.duration === "function" ? options.duration( outerHeight ) : options.duration || 400;
+		const cssDuration = duration + 'ms';
+		const cssEasing = options.ease || CSS_EASE_OUT_EXPO;
+		const cssTransition = [
+			`height ${ cssDuration } ${ cssEasing }`,
+			`padding ${ cssDuration } ${ cssEasing }`,
+			`border-width ${ cssDuration } ${ cssEasing }`
+		].join();
 
 		requestAnimationFrame( (): void => {
 

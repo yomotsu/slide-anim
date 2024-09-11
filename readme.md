@@ -11,6 +11,7 @@ Light weight, stand alone, jQuery like slideDown / slideUp
 - [border-box](https://yomotsu.github.io/slide-anim/examples/border-box.html)
 - [none-block-box](https://yomotsu.github.io/slide-anim/examples/none-block-box.html)
 - [duration](https://yomotsu.github.io/slide-anim/examples/duration.html)
+- [duration function](https://yomotsu.github.io/slide-anim/examples/speed.html)
 - [callback](https://yomotsu.github.io/slide-anim/examples/callback.html)
 - [end-height(experimental)](https://yomotsu.github.io/slide-anim/examples/end-height.html)
 
