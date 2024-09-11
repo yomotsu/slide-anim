@@ -1,6 +1,6 @@
 import { inAnimItems } from './in-anim-items';
 
-const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
+const CSS_EASEOUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
 
 export interface SlideDownOption {
 	endHeight?: number;
@@ -89,7 +89,6 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Pro
 			el.style.overflow          = 'hidden';
 			el.style.visibility        = 'visible';
 			el.style.transition        = cssTransition;
-			el.style.webkitTransition  = cssTransition;
 
 			requestAnimationFrame( (): void => {
 
@@ -188,7 +187,6 @@ export function slideUp( el: HTMLElement, options: SlieUpOptions = {} ): Promise
 			el.style.display           = display;
 			el.style.overflow          = 'hidden';
 			el.style.transition        = cssTransition;
-			el.style.webkitTransition  = cssTransition;
 
 			requestAnimationFrame( (): void => {
 
@@ -260,7 +258,6 @@ function resetStyle( el: HTMLElement ): void {
 	el.style.borderBottomWidth = '';
 	el.style.overflow          = '';
 	el.style.transition        = '';
-	el.style.webkitTransition  = '';
 
 }
 
