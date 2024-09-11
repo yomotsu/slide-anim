@@ -1,15 +1,17 @@
 export interface SlideDownOption {
     endHeight?: number;
     display?: string;
-    duration?: number;
+    ease?: string;
+    duration?: number | ((outerHeight: number) => number);
     onCancelled?: () => any;
 }
 export declare function slideDown(el: HTMLElement, options?: SlideDownOption): Promise<void>;
-export interface SlieUpOptions {
+export interface SlideUpOptions {
     display?: string;
-    duration?: number;
+    ease?: string;
+    duration?: number | ((outerHeight: number) => number);
     onCancelled?: () => any;
 }
-export declare function slideUp(el: HTMLElement, options?: SlieUpOptions): Promise<void>;
+export declare function slideUp(el: HTMLElement, options?: SlideUpOptions): Promise<void>;
 export declare function slideStop(el: HTMLElement): void;
 export declare function isVisible(el: HTMLElement): boolean;

@@ -36,7 +36,7 @@ const inAnimItems = {
     }
 };
 
-const CSS_EASEOUT_EXPO = 'cubic-bezier( 0.19, 1, 0.22, 1 )';
+const CSS_EASE_OUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
 function slideDown(el, options = {}) {
     return new Promise((resolve) => {
         if (inAnimItems.findIndex(el) !== -1)
@@ -44,7 +44,6 @@ function slideDown(el, options = {}) {
         const _isVisible = isVisible(el);
         const hasEndHeight = typeof options.endHeight === 'number';
         const display = options.display || 'block';
-        const duration = options.duration || 400;
         const onCancelled = options.onCancelled || function () { };
         const defaultStyle = el.getAttribute('style') || '';
         const style = window.getComputedStyle(el);
@@ -56,14 +55,6 @@ function slideDown(el, options = {}) {
         const paddingBottom = defaultStyles.paddingBottom;
         const borderTop = defaultStyles.borderTop;
         const borderBottom = defaultStyles.borderBottom;
-        const cssDuration = `${duration}ms`;
-        const cssEasing = CSS_EASEOUT_EXPO;
-        const cssTransition = [
-            `height ${cssDuration} ${cssEasing}`,
-            `min-height ${cssDuration} ${cssEasing}`,
-            `padding ${cssDuration} ${cssEasing}`,
-            `border-width ${cssDuration} ${cssEasing}`
-        ].join();
         const startHeight = _isVisible ? style.height : '0px';
         const startMinHeight = _isVisible ? style.minHeight : '0px';
         const startPaddingTop = _isVisible ? style.paddingTop : '0px';
@@ -90,6 +81,16 @@ function slideDown(el, options = {}) {
             resolve();
             return;
         }
+        const outerHeight = isBorderBox ? contentHeight : contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
+        const duration = typeof options.duration === "function" ? options.duration(outerHeight) : options.duration || 400;
+        const cssDuration = `${duration}ms`;
+        const cssEasing = options.ease || CSS_EASE_OUT_EXPO;
+        const cssTransition = [
+            `height ${cssDuration} ${cssEasing}`,
+            `min-height ${cssDuration} ${cssEasing}`,
+            `padding ${cssDuration} ${cssEasing}`,
+            `border-width ${cssDuration} ${cssEasing}`
+        ].join();
         requestAnimationFrame(() => {
             el.style.height = startHeight;
             el.style.minHeight = startMinHeight;
@@ -101,7 +102,6 @@ function slideDown(el, options = {}) {
             el.style.overflow = 'hidden';
             el.style.visibility = 'visible';
             el.style.transition = cssTransition;
-            el.style.webkitTransition = cssTransition;
             requestAnimationFrame(() => {
                 el.style.height = endHeight;
                 el.style.minHeight = endMinHeight;
@@ -130,7 +130,6 @@ function slideUp(el, options = {}) {
             return;
         const _isVisible = isVisible(el);
         const display = options.display || 'block';
-        const duration = options.duration || 400;
         const onCancelled = options.onCancelled || function () { };
         if (!_isVisible) {
             resolve();
@@ -145,13 +144,6 @@ function slideUp(el, options = {}) {
         const borderTop = pxToNumber(style.getPropertyValue('border-top-width'));
         const borderBottom = pxToNumber(style.getPropertyValue('border-bottom-width'));
         const contentHeight = el.scrollHeight;
-        const cssDuration = duration + 'ms';
-        const cssEasing = CSS_EASEOUT_EXPO;
-        const cssTransition = [
-            `height ${cssDuration} ${cssEasing}`,
-            `padding ${cssDuration} ${cssEasing}`,
-            `border-width ${cssDuration} ${cssEasing}`
-        ].join();
         const startHeight = !isBorderBox ?
             `${contentHeight - paddingTop - paddingBottom}px` :
             `${contentHeight + borderTop + borderBottom}px`;
@@ -160,6 +152,15 @@ function slideUp(el, options = {}) {
         const startPaddingBottom = `${paddingBottom}px`;
         const startBorderTopWidth = `${borderTop}px`;
         const startBorderBottomWidth = `${borderBottom}px`;
+        const outerHeight = isBorderBox ? contentHeight : contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
+        const duration = typeof options.duration === "function" ? options.duration(outerHeight) : options.duration || 400;
+        const cssDuration = duration + 'ms';
+        const cssEasing = options.ease || CSS_EASE_OUT_EXPO;
+        const cssTransition = [
+            `height ${cssDuration} ${cssEasing}`,
+            `padding ${cssDuration} ${cssEasing}`,
+            `border-width ${cssDuration} ${cssEasing}`
+        ].join();
         requestAnimationFrame(() => {
             el.style.height = startHeight;
             el.style.minHeight = startMinHeight;
@@ -170,7 +171,6 @@ function slideUp(el, options = {}) {
             el.style.display = display;
             el.style.overflow = 'hidden';
             el.style.transition = cssTransition;
-            el.style.webkitTransition = cssTransition;
             requestAnimationFrame(() => {
                 el.style.height = '0';
                 el.style.minHeight = '0';
@@ -221,7 +221,6 @@ function resetStyle(el) {
     el.style.borderBottomWidth = '';
     el.style.overflow = '';
     el.style.transition = '';
-    el.style.webkitTransition = '';
 }
 function getDefaultStyles(el, defaultDisplay = 'block') {
     const defaultStyle = el.getAttribute('style') || '';
