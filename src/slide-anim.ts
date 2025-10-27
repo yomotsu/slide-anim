@@ -3,10 +3,11 @@ import { inAnimItems } from './in-anim-items';
 const CSS_EASE_OUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
 
 export interface SlideExpandOption {
-  endHeight?: number;
+	endHeight?: number;
   display?: string;
 	ease?: string;
 	duration?: number | ((outerHeight: number) => number);
+	autoClear?: boolean;
   onCancelled?: () => any;
 };
 
@@ -79,43 +80,45 @@ export function slideExpand( el: HTMLElement, options: SlideExpandOption = {} ):
 			`border-width ${ cssDuration } ${ cssEasing }`
 		].join();
 
-		requestAnimationFrame( (): void => {
+		void el.offsetWidth; // force reflow
 
-			el.style.height            = startHeight;
-			el.style.minHeight         = startMinHeight;
-			el.style.paddingTop        = startPaddingTop;
-			el.style.paddingBottom     = startPaddingBottom;
-			el.style.borderTopWidth    = startBorderTopWidth;
-			el.style.borderBottomWidth = startBorderBottomWidth;
-			el.style.display           = display;
-			el.style.overflow          = 'hidden';
-			el.style.visibility        = 'visible';
-			el.style.transition        = cssTransition;
+		el.style.height            = startHeight;
+		el.style.minHeight         = startMinHeight;
+		el.style.paddingTop        = startPaddingTop;
+		el.style.paddingBottom     = startPaddingBottom;
+		el.style.borderTopWidth    = startBorderTopWidth;
+		el.style.borderBottomWidth = startBorderBottomWidth;
+		el.style.display           = display;
+		el.style.overflow          = 'hidden';
+		el.style.visibility        = 'visible';
+		el.style.transition        = cssTransition;
 
-			requestAnimationFrame( (): void => {
+		void el.offsetWidth; // force reflow
 
-				el.style.height            = endHeight;
-				el.style.minHeight         = endMinHeight;
-				el.style.paddingTop        = endPaddingTop;
-				el.style.paddingBottom     = endPaddingBottom;
-				el.style.borderTopWidth    = endBorderTopWidth;
-				el.style.borderBottomWidth = endBorderBottomWidth;
-
-			} );
-
-		} );
+		el.style.height            = endHeight;
+		el.style.minHeight         = endMinHeight;
+		el.style.paddingTop        = endPaddingTop;
+		el.style.paddingBottom     = endPaddingBottom;
+		el.style.borderTopWidth    = endBorderTopWidth;
+		el.style.borderBottomWidth = endBorderBottomWidth;
 
 		const timeoutId = setTimeout( (): void => {
 
-			// el.setAttribute( 'style', defaultStyle );
 			resetStyle( el );
-			el.style.display = display;
-			if ( hasEndHeight ) {
 
-				el.style.height = `${ options.endHeight }px`;
-				el.style.overflow = `hidden`;
+			if ( ! options.autoClear ) {
+
+				el.style.display = display;
+
+				if ( hasEndHeight ) {
+
+					el.style.height = `${ options.endHeight }px`;
+					el.style.overflow = `hidden`;
+
+				}
 
 			}
+
 			inAnimItems.remove( el );
 
 			resolve();
@@ -132,6 +135,7 @@ export interface SlideCollapseOptions {
   display?: string;
 	ease?: string;
 	duration?: number | ((outerHeight: number) => number);
+	autoClear?: boolean;
   onCancelled?: () => any;
 };
 
@@ -181,36 +185,33 @@ export function slideCollapse( el: HTMLElement, options: SlideCollapseOptions = 
 			`border-width ${ cssDuration } ${ cssEasing }`
 		].join();
 
-		requestAnimationFrame( (): void => {
+		void el.offsetWidth; // force reflow
 
-			el.style.height            = startHeight;
-			el.style.minHeight         = startMinHeight;
-			el.style.paddingTop        = startPaddingTop;
-			el.style.paddingBottom     = startPaddingBottom;
-			el.style.borderTopWidth    = startBorderTopWidth;
-			el.style.borderBottomWidth = startBorderBottomWidth;
-			el.style.display           = display;
-			el.style.overflow          = 'hidden';
-			el.style.transition        = cssTransition;
+		el.style.height            = startHeight;
+		el.style.minHeight         = startMinHeight;
+		el.style.paddingTop        = startPaddingTop;
+		el.style.paddingBottom     = startPaddingBottom;
+		el.style.borderTopWidth    = startBorderTopWidth;
+		el.style.borderBottomWidth = startBorderBottomWidth;
+		el.style.display           = display;
+		el.style.overflow          = 'hidden';
+		el.style.transition        = cssTransition;
 
-			requestAnimationFrame( (): void => {
+		void el.offsetWidth; // force reflow
 
-				el.style.height            = '0';
-				el.style.minHeight         = '0';
-				el.style.paddingTop        = '0';
-				el.style.paddingBottom     = '0';
-				el.style.borderTopWidth    = '0';
-				el.style.borderBottomWidth = '0';
-
-			} );
-
-		} );
+		el.style.height            = '0';
+		el.style.minHeight         = '0';
+		el.style.paddingTop        = '0';
+		el.style.paddingBottom     = '0';
+		el.style.borderTopWidth    = '0';
+		el.style.borderBottomWidth = '0';
 
 		const timeoutId = setTimeout( (): void => {
 
-			// el.setAttribute( 'style', defaultStyle );
 			resetStyle( el );
-			el.style.display = 'none';
+
+			if ( ! options.autoClear ) el.style.display = 'none';
+
 			inAnimItems.remove( el );
 			resolve();
 

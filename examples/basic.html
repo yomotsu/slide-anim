@@ -46,10 +46,10 @@ const slideExpandButton = document.querySelector( '#slideExpandButton' );
 
 
 slideCollapseButton.addEventListener( 'click', function () {
-	slideAnim.slideCollapse( panel );
+	slideAnim.slideCollapse( panel, { autoClear: true } );
 } );
 slideExpandButton.addEventListener( 'click', function () {
-	slideAnim.slideExpand( panel );
+	slideAnim.slideExpand( panel, { autoClear: true } );
 } );
 
 </script>
