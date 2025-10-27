@@ -1,6 +1,6 @@
 # slide-anim
 
-Light weight, stand alone, jQuery like slideDown / slideUp
+Light weight, stand alone, jQuery like slideExpand / slideCollapse
 
 [![Latest NPM release](https://img.shields.io/npm/v/slide-anim.svg)](https://www.npmjs.com/package/slide-anim)
 ![MIT License](https://img.shields.io/npm/l/slide-anim.svg)
@@ -24,18 +24,18 @@ $ npm install --save slide-anim
 then
 
 ```javascript
-import { slideDown, slideUp, slideStop, isVisible } from 'slide-anim';
+import { slideExpand, slideCollapse, slideStop, isVisible } from 'slide-anim';
 
 var element = document.getElementById( 'panel' );
 
-function onSlideUpButtonClick () {
+function onslideCollapseButtonClick () {
 	slideStop( element );
-	slideUp( element );
+	slideCollapse( element );
 }
 
-function onSlideDownButtonClick () {
+function onslideExpandButtonClick () {
 	slideStop( element );
-	slideDown( element );
+	slideExpand( element );
 }
 
 function onSlideStopButtonClick () {
@@ -54,21 +54,21 @@ Copy slide-anim.js from /dist/slide-anim.js and place it in your project.
 ```javascript
 var element = document.getElementById( 'panel' );
 
-function onSlideUpButtonClick () {
+function onslideCollapseButtonClick () {
 	slideAnim.slideStop( element );
-	slideAnim.slideUp( element );
+	slideAnim.slideCollapse( element );
 }
 
-function onSlideDownButtonClick () {
+function onslideExpandButtonClick () {
 	slideAnim.slideStop( element );
-	slideAnim.slideDown( element );
+	slideAnim.slideExpand( element );
 }
 ```
 
 ### Functions
 
-- `slideUp( element )` : Slide up
-- `slideDown( element )` : Slide down
+- `slideCollapse( element )` : Slide up
+- `slideExpand( element )` : Slide down
 - `slideStop( element )` : Stop current slide animation. Useful to start another slide 
 animation.
 - `isVisible( element )` : return wheather the element is shown or `display: none`.
@@ -82,7 +82,7 @@ animation.
 
 e.g.
 ```javascript
-slideUp( element, {
+slideCollapse( element, {
 	duration: 800,
 	display: 'flex'
 } );
@@ -90,11 +90,11 @@ slideUp( element, {
 
 ### Callbacks
 
-`slideDown` and `slideUp` return a Promise.
+`slideExpand` and `slideCollapse` return a Promise.
 
 e.g
 ```javascript
-slideUp( element ).then( function() {
+slideCollapse( element ).then( function() {
 
 	console.log( 'done!' );
 

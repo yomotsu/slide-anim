@@ -2,7 +2,7 @@ import { inAnimItems } from './in-anim-items';
 
 const CSS_EASE_OUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
 
-export interface SlideDownOption {
+export interface SlideExpandOption {
   endHeight?: number;
   display?: string;
 	ease?: string;
@@ -10,7 +10,7 @@ export interface SlideDownOption {
   onCancelled?: () => any;
 };
 
-export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Promise<void> {
+export function slideExpand( el: HTMLElement, options: SlideExpandOption = {} ): Promise<void> {
 
 	return new Promise( ( resolve ) => {
 
@@ -128,14 +128,14 @@ export function slideDown( el: HTMLElement, options: SlideDownOption = {} ): Pro
 
 }
 
-export interface SlideUpOptions {
+export interface SlideCollapseOptions {
   display?: string;
 	ease?: string;
 	duration?: number | ((outerHeight: number) => number);
   onCancelled?: () => any;
 };
 
-export function slideUp( el: HTMLElement, options: SlideUpOptions = {} ): Promise<void> {
+export function slideCollapse( el: HTMLElement, options: SlideCollapseOptions = {} ): Promise<void> {
 
 	return new Promise( ( resolve ) => {
 

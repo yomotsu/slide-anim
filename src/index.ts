@@ -1,6 +1,14 @@
+import {
+  slideExpand,
+  slideCollapse,
+} from  './slide-anim';
 export {
-  slideDown,
-  slideUp,
+  slideExpand,
+  slideCollapse,
   slideStop,
   isVisible
 } from  './slide-anim';
+
+// backward compatibility aliases
+export const slideDown = slideExpand;
+export const slideUp = slideCollapse;

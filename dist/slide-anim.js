@@ -43,7 +43,7 @@
 	};
 
 	const CSS_EASE_OUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
-	function slideDown(el, options = {}) {
+	function slideExpand(el, options = {}) {
 	    return new Promise((resolve) => {
 	        if (inAnimItems.findIndex(el) !== -1)
 	            return;
@@ -130,7 +130,7 @@
 	        inAnimItems.add(el, defaultStyle, timeoutId, onCancelled);
 	    });
 	}
-	function slideUp(el, options = {}) {
+	function slideCollapse(el, options = {}) {
 	    return new Promise((resolve) => {
 	        if (inAnimItems.findIndex(el) !== -1)
 	            return;
@@ -263,8 +263,8 @@
 	}
 
 	exports.isVisible = isVisible;
-	exports.slideDown = slideDown;
+	exports.slideExpand = slideExpand;
 	exports.slideStop = slideStop;
-	exports.slideUp = slideUp;
+	exports.slideCollapse = slideCollapse;
 
 }));

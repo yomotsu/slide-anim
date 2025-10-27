@@ -20,12 +20,12 @@
 
 <button
 	type="button"
-	id="slideUpButton"
+	id="slideCollapseButton"
 >slide up</button>
 
 <button
 	type="button"
-	id="slideDownButton"
+	id="slideExpandButton"
 >slide down</button>
 
 <div id="panel"></div>
@@ -36,22 +36,22 @@
 <script>
 
 const panel           = document.querySelector( '#panel' );
-const slideUpButton   = document.querySelector( '#slideUpButton' );
-const slideDownButton = document.querySelector( '#slideDownButton' );
+const slideCollapseButton   = document.querySelector( '#slideCollapseButton' );
+const slideExpandButton = document.querySelector( '#slideExpandButton' );
 
 const speed = 1.2; // pixels per second
 const computeDuration = ( outerHeight ) => outerHeight / speed;
 
-slideUpButton.addEventListener( 'click', async () => {
+slideCollapseButton.addEventListener( 'click', async () => {
 	const startTime = performance.now();
-	await slideAnim.slideUp( panel, { duration: computeDuration, ease: 'ease-out' } );
-	console.log( 'slideUp done', performance.now() - startTime );
+	await slideAnim.slideCollapse( panel, { duration: computeDuration, ease: 'ease-out' } );
+	console.log( 'slideCollapse done', performance.now() - startTime );
 } );
 
-slideDownButton.addEventListener( 'click', async () => {
+slideExpandButton.addEventListener( 'click', async () => {
 	const startTime = performance.now();
-	await slideAnim.slideDown( panel, { duration: computeDuration, ease: 'ease-out' } );
-	console.log( 'slideDown done', performance.now() - startTime );
+	await slideAnim.slideExpand( panel, { duration: computeDuration, ease: 'ease-out' } );
+	console.log( 'slideExpand done', performance.now() - startTime );
 } );
 
 </script>

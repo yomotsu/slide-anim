@@ -1,1 +1,1 @@
-export { slideDown, slideUp, slideStop, isVisible } from './slide-anim';
+export { slideExpand, slideCollapse, slideStop, isVisible } from './slide-anim';

@@ -21,8 +21,8 @@
   },
   "keywords": [
     "slide",
-    "slideDown",
-    "slideUp",
+    "slideExpand",
+    "slideCollapse",
     "slideToggle"
   ]
 }

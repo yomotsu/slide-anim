@@ -37,7 +37,7 @@ const inAnimItems = {
 };
 
 const CSS_EASE_OUT_EXPO = 'cubic-bezier(0.19,1,0.22,1)';
-function slideDown(el, options = {}) {
+function slideExpand(el, options = {}) {
     return new Promise((resolve) => {
         if (inAnimItems.findIndex(el) !== -1)
             return;
@@ -124,7 +124,7 @@ function slideDown(el, options = {}) {
         inAnimItems.add(el, defaultStyle, timeoutId, onCancelled);
     });
 }
-function slideUp(el, options = {}) {
+function slideCollapse(el, options = {}) {
     return new Promise((resolve) => {
         if (inAnimItems.findIndex(el) !== -1)
             return;
@@ -256,4 +256,4 @@ function pxToNumber(px) {
     return +px.replace(/px/, '');
 }
 
-export { isVisible, slideDown, slideStop, slideUp };
+export { isVisible, slideExpand, slideStop, slideCollapse };

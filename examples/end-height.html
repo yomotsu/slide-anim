@@ -18,12 +18,12 @@
 
 <button
 	type="button"
-	id="slideUpButton"
+	id="slideCollapseButton"
 >slide up</button>
 
 <button
 	type="button"
-	id="slideDownButton50"
+	id="slideExpandButton50"
 >slide down to 50</button>
 
 <button
@@ -46,19 +46,19 @@
 <script>
 
 const panel              = document.querySelector( '#panel' );
-const slideUpButton      = document.querySelector( '#slideUpButton' );
-const slideDown50Button  = document.querySelector( '#slideDownButton50' );
-const slideDown100Button = document.querySelector( '#slideStopButton100' );
+const slideCollapseButton      = document.querySelector( '#slideCollapseButton' );
+const slideExpand50Button  = document.querySelector( '#slideExpandButton50' );
+const slideExpand100Button = document.querySelector( '#slideStopButton100' );
 
 
-slideUpButton.addEventListener( 'click', function () {
-	slideAnim.slideUp( panel );
+slideCollapseButton.addEventListener( 'click', function () {
+	slideAnim.slideCollapse( panel );
 } );
-slideDown50Button.addEventListener( 'click', function () {
-	slideAnim.slideDown( panel, { endHeight: 50 } );
+slideExpand50Button.addEventListener( 'click', function () {
+	slideAnim.slideExpand( panel, { endHeight: 50 } );
 } );
-slideDown100Button.addEventListener( 'click', function () {
-	slideAnim.slideDown( panel, { endHeight: 100 } );
+slideExpand100Button.addEventListener( 'click', function () {
+	slideAnim.slideExpand( panel, { endHeight: 100 } );
 } );
 
 </script>

@@ -23,12 +23,12 @@
 
 <button
 	type="button"
-	id="slideUpButton"
+	id="slideCollapseButton"
 >slide up</button>
 
 <button
 	type="button"
-	id="slideDownButton"
+	id="slideExpandButton"
 >slide down</button>
 
 <div id="panel">
@@ -42,15 +42,15 @@
 <script>
 
 const panel           = document.querySelector( '#panel' );
-const slideUpButton   = document.querySelector( '#slideUpButton' );
-const slideDownButton = document.querySelector( '#slideDownButton' );
+const slideCollapseButton   = document.querySelector( '#slideCollapseButton' );
+const slideExpandButton = document.querySelector( '#slideExpandButton' );
 
 
-slideUpButton.addEventListener( 'click', function () {
-	slideAnim.slideUp( panel );
+slideCollapseButton.addEventListener( 'click', function () {
+	slideAnim.slideCollapse( panel );
 } );
-slideDownButton.addEventListener( 'click', function () {
-	slideAnim.slideDown( panel, { display: 'flex' } );
+slideExpandButton.addEventListener( 'click', function () {
+	slideAnim.slideExpand( panel, { display: 'flex' } );
 } );
 
 </script>
