@@ -28,12 +28,12 @@ import { slideExpand, slideCollapse, slideStop, isVisible } from 'slide-anim';
 
 var element = document.getElementById( 'panel' );
 
-function onslideCollapseButtonClick () {
+function onSlideCollapseButtonClick () {
 	slideStop( element );
 	slideCollapse( element );
 }
 
-function onslideExpandButtonClick () {
+function onSlideExpandButtonClick () {
 	slideStop( element );
 	slideExpand( element );
 }
@@ -54,12 +54,12 @@ Copy slide-anim.js from /dist/slide-anim.js and place it in your project.
 ```javascript
 var element = document.getElementById( 'panel' );
 
-function onslideCollapseButtonClick () {
+function onSlideCollapseButtonClick () {
 	slideAnim.slideStop( element );
 	slideAnim.slideCollapse( element );
 }
 
-function onslideExpandButtonClick () {
+function onSlideExpandButtonClick () {
 	slideAnim.slideStop( element );
 	slideAnim.slideExpand( element );
 }
@@ -79,6 +79,7 @@ animation.
 | ------------- | -------- | --- |
 | `duration`    | optional | animation duration in ms. default is `400` |
 | `display`     | optional | default CSS display, such as `'flex'`. default is `'block'` |
+| `autoClear`   | optional | whether to clear the element's `display` style attributes after animation. default is `false` |
 
 e.g.
 ```javascript

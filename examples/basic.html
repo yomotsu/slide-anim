@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
@@ -40,16 +40,16 @@
 <script src="../dist/slide-anim.js"></script>
 <script>
 
-const panel           = document.querySelector( '#panel' );
-const slideCollapseButton   = document.querySelector( '#slideCollapseButton' );
+const panel = document.querySelector( '#panel' );
+const slideCollapseButton = document.querySelector( '#slideCollapseButton' );
 const slideExpandButton = document.querySelector( '#slideExpandButton' );
 
 
-slideCollapseButton.addEventListener( 'click', function () {
-	slideAnim.slideCollapse( panel, { autoClear: true } );
+slideCollapseButton.addEventListener( 'click', () => {
+	slideAnim.slideCollapse( panel );
 } );
-slideExpandButton.addEventListener( 'click', function () {
-	slideAnim.slideExpand( panel, { autoClear: true } );
+slideExpandButton.addEventListener( 'click', () => {
+	slideAnim.slideExpand( panel );
 } );
 
 </script>
