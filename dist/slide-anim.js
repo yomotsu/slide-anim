@@ -97,32 +97,32 @@
 	            `padding ${cssDuration} ${cssEasing}`,
 	            `border-width ${cssDuration} ${cssEasing}`
 	        ].join();
-	        requestAnimationFrame(() => {
-	            el.style.height = startHeight;
-	            el.style.minHeight = startMinHeight;
-	            el.style.paddingTop = startPaddingTop;
-	            el.style.paddingBottom = startPaddingBottom;
-	            el.style.borderTopWidth = startBorderTopWidth;
-	            el.style.borderBottomWidth = startBorderBottomWidth;
-	            el.style.display = display;
-	            el.style.overflow = 'hidden';
-	            el.style.visibility = 'visible';
-	            el.style.transition = cssTransition;
-	            requestAnimationFrame(() => {
-	                el.style.height = endHeight;
-	                el.style.minHeight = endMinHeight;
-	                el.style.paddingTop = endPaddingTop;
-	                el.style.paddingBottom = endPaddingBottom;
-	                el.style.borderTopWidth = endBorderTopWidth;
-	                el.style.borderBottomWidth = endBorderBottomWidth;
-	            });
-	        });
+	        void el.offsetWidth;
+	        el.style.height = startHeight;
+	        el.style.minHeight = startMinHeight;
+	        el.style.paddingTop = startPaddingTop;
+	        el.style.paddingBottom = startPaddingBottom;
+	        el.style.borderTopWidth = startBorderTopWidth;
+	        el.style.borderBottomWidth = startBorderBottomWidth;
+	        el.style.display = display;
+	        el.style.overflow = 'hidden';
+	        el.style.visibility = 'visible';
+	        el.style.transition = cssTransition;
+	        void el.offsetWidth;
+	        el.style.height = endHeight;
+	        el.style.minHeight = endMinHeight;
+	        el.style.paddingTop = endPaddingTop;
+	        el.style.paddingBottom = endPaddingBottom;
+	        el.style.borderTopWidth = endBorderTopWidth;
+	        el.style.borderBottomWidth = endBorderBottomWidth;
 	        const timeoutId = setTimeout(() => {
 	            resetStyle(el);
-	            el.style.display = display;
-	            if (hasEndHeight) {
-	                el.style.height = `${options.endHeight}px`;
-	                el.style.overflow = `hidden`;
+	            if (!options.autoClear) {
+	                el.style.display = display;
+	                if (hasEndHeight) {
+	                    el.style.height = `${options.endHeight}px`;
+	                    el.style.overflow = `hidden`;
+	                }
 	            }
 	            inAnimItems.remove(el);
 	            resolve();
@@ -167,28 +167,27 @@
 	            `padding ${cssDuration} ${cssEasing}`,
 	            `border-width ${cssDuration} ${cssEasing}`
 	        ].join();
-	        requestAnimationFrame(() => {
-	            el.style.height = startHeight;
-	            el.style.minHeight = startMinHeight;
-	            el.style.paddingTop = startPaddingTop;
-	            el.style.paddingBottom = startPaddingBottom;
-	            el.style.borderTopWidth = startBorderTopWidth;
-	            el.style.borderBottomWidth = startBorderBottomWidth;
-	            el.style.display = display;
-	            el.style.overflow = 'hidden';
-	            el.style.transition = cssTransition;
-	            requestAnimationFrame(() => {
-	                el.style.height = '0';
-	                el.style.minHeight = '0';
-	                el.style.paddingTop = '0';
-	                el.style.paddingBottom = '0';
-	                el.style.borderTopWidth = '0';
-	                el.style.borderBottomWidth = '0';
-	            });
-	        });
+	        void el.offsetWidth;
+	        el.style.height = startHeight;
+	        el.style.minHeight = startMinHeight;
+	        el.style.paddingTop = startPaddingTop;
+	        el.style.paddingBottom = startPaddingBottom;
+	        el.style.borderTopWidth = startBorderTopWidth;
+	        el.style.borderBottomWidth = startBorderBottomWidth;
+	        el.style.display = display;
+	        el.style.overflow = 'hidden';
+	        el.style.transition = cssTransition;
+	        void el.offsetWidth;
+	        el.style.height = '0';
+	        el.style.minHeight = '0';
+	        el.style.paddingTop = '0';
+	        el.style.paddingBottom = '0';
+	        el.style.borderTopWidth = '0';
+	        el.style.borderBottomWidth = '0';
 	        const timeoutId = setTimeout(() => {
 	            resetStyle(el);
-	            el.style.display = 'none';
+	            if (!options.autoClear)
+	                el.style.display = 'none';
 	            inAnimItems.remove(el);
 	            resolve();
 	        }, duration);
@@ -262,9 +261,14 @@
 	    return +px.replace(/px/, '');
 	}
 
+	const slideDown = slideExpand;
+	const slideUp = slideCollapse;
+
 	exports.isVisible = isVisible;
+	exports.slideCollapse = slideCollapse;
+	exports.slideDown = slideDown;
 	exports.slideExpand = slideExpand;
 	exports.slideStop = slideStop;
-	exports.slideCollapse = slideCollapse;
+	exports.slideUp = slideUp;
 
 }));
