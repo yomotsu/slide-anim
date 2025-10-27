@@ -1,6 +1,9 @@
-import pkg from './package.json' assert { type: "json" };
+import { createRequire } from 'module';
 import typescript from 'typescript';
 import rollupTypescript from '@rollup/plugin-typescript';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
 
 const license = `/*!
  * ${ pkg.name }
